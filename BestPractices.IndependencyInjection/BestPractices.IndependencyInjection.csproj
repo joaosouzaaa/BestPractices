@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BestPractices.ApplicationService\BestPractices.ApplicationService.csproj" />
+    <ProjectReference Include="..\BestPractices.Business\BestPractices.Business.csproj" />
+    <ProjectReference Include="..\BestPractices.Infra\BestPractices.Infra.csproj" />
+  </ItemGroup>
+
+</Project>
