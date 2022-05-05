@@ -1,9 +1,11 @@
+using BestPractices.Api.Configuration;
 using BestPractices.IndependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
 builder.Services.SettingsHandler(configuration);
+builder.Services.AddFiltersConfiguration();
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
