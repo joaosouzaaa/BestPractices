@@ -17,6 +17,12 @@ namespace BestPractices.Domain.Enums
         InvalidFormat,
 
         [Description("{0} age has to be greater than 18 years")]
-        InvalidAge
+        InvalidAge,
+        
+        [Description("An unexpected error happened")]
+        UnexpectedError,
+
+        [Description("Invalid Credencials")]
+        InvalidCredencials
     }
 }

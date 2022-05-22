@@ -2,13 +2,16 @@
 using BestPractices.ApplicationService.DTO_s.Response;
 using BestPractices.ApplicationService.Interfaces;
 using BestPractices.Business.NotificationSettings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace BestPractices.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class ClientController : ControllerBase
     {
         private readonly IClientService _clientService;
@@ -16,16 +19,6 @@ namespace BestPractices.Api.Controllers
         public ClientController(IClientService clientService)
         {
             _clientService = clientService;
-        }
-
-        [HttpPost("post")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task Post(ClientSaveRequest clientSaveRequest)
-        {
-            await this._clientService.SaveAsync(clientSaveRequest);
         }
 
         [HttpPut("put")]

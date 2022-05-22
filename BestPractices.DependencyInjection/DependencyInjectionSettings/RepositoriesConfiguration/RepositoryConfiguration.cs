@@ -9,6 +9,7 @@ namespace BestPractices.IndependencyInjection.DependencyInjectionSettings.Reposi
         public static void AddRepositoryConfiguration(this IServiceCollection services)
         {
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

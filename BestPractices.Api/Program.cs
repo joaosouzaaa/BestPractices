@@ -4,6 +4,7 @@ using BestPractices.IndependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
+builder.Services.AddSwaggerConfiguration();
 builder.Services.SettingsHandler(configuration);
 builder.Services.AddFiltersConfiguration();
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
@@ -22,6 +23,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -24,13 +24,7 @@ namespace BestPractices.Domain.EntitiesValidation
             RuleFor(p => p.BirthDate).NotEmpty().WithMessage(EMessage.Required.Description()
                 .FormatTo("Birth Date"));
 
-            RuleFor(p => p.Age).NotEmpty().WithMessage(EMessage.Required.Description()
-                .FormatTo("Client Age"));
-
-            RuleFor(p => p.Age).GreaterThan(17).WithMessage(EMessage.InvalidAge.Description()
-                .FormatTo("Client Age"));
-
-            RuleFor(p => p.CPF).NotEmpty().WithMessage(EMessage.Required.Description()
+            RuleFor(p => p.DocumentNumber).NotEmpty().WithMessage(EMessage.Required.Description()
                 .FormatTo("Client CPF"));
         }
     }

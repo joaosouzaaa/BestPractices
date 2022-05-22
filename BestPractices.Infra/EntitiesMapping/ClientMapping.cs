@@ -19,11 +19,8 @@ namespace BestPractices.Infra.EntitiesMapping
             builder.Property(c => c.BirthDate).HasColumnType("date")
                 .HasColumnName("birth_date").IsRequired();
 
-            builder.Property(c => c.Age).HasColumnType("int")
-                .HasColumnName("age").IsRequired();
-
-            builder.Property(c => c.CPF).HasColumnType("varchar(11)")
-                .HasColumnName("cpf").IsRequired();
+            builder.Property(c => c.DocumentNumber).HasColumnType("varchar(11)")
+                .HasColumnName("document_number").IsRequired();
         }
     }
 }

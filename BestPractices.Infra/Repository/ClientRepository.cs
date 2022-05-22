@@ -7,9 +7,9 @@ namespace BestPractices.Infra.Repository
 {
     public class ClientRepository : IClientRepository
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly UserDbContext _dbContext;
 
-        public ClientRepository(ApplicationDbContext dbContext)
+        public ClientRepository(UserDbContext dbContext)
         {
             _dbContext = dbContext;
         }

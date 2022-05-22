@@ -9,6 +9,8 @@ namespace BestPractices.IndependencyInjection.DependencyInjectionSettings.Servic
         public static void AddServiceConfiguration(this IServiceCollection services)
         {
             services.AddScoped<IClientService, ClientService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITokenManagerService, TokenManagerService>();
         }
     }
 }

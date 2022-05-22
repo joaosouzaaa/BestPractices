@@ -3,17 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BestPractices.Api", "BestPractices.Api\BestPractices.Api.csproj", "{BDE649D0-E6FE-4ACC-9755-8F31FA3BC718}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BestPractices.Api", "BestPractices.Api\BestPractices.Api.csproj", "{BDE649D0-E6FE-4ACC-9755-8F31FA3BC718}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BestPractices.Business", "BestPractices.Business\BestPractices.Business.csproj", "{1EF39B97-5D17-4B74-B123-C3C0236B2D5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BestPractices.Business", "BestPractices.Business\BestPractices.Business.csproj", "{1EF39B97-5D17-4B74-B123-C3C0236B2D5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BestPractices.Domain", "BestPractices.Domain\BestPractices.Domain.csproj", "{3C866EA6-3C29-49B5-8C09-78CA2AED05F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BestPractices.Domain", "BestPractices.Domain\BestPractices.Domain.csproj", "{3C866EA6-3C29-49B5-8C09-78CA2AED05F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BestPractices.Infra", "BestPractices.Infra\BestPractices.Infra.csproj", "{A7F5234C-5789-43E3-A1E1-56DCB68B1BD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BestPractices.Infra", "BestPractices.Infra\BestPractices.Infra.csproj", "{A7F5234C-5789-43E3-A1E1-56DCB68B1BD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BestPractices.IndependencyInjection", "BestPractices.IndependencyInjection\BestPractices.IndependencyInjection.csproj", "{A7B19605-5AA5-429D-95C3-6958F93AFD4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BestPractices.ApplicationService", "BestPractices.ApplicationService\BestPractices.ApplicationService.csproj", "{590F97A8-50B2-4262-B078-13AFE31E5A14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BestPractices.ApplicationService", "BestPractices.ApplicationService\BestPractices.ApplicationService.csproj", "{590F97A8-50B2-4262-B078-13AFE31E5A14}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F7EBB102-D6DC-4435-A1EF-914002BDCBA7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{32D2E35A-8557-49F4-9485-AE940A251238}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BestPractices.DependencyInjection", "BestPractices.DependencyInjection\BestPractices.DependencyInjection.csproj", "{BEA8F59E-75CA-4F3F-82EC-080AF49885F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,17 +41,24 @@ Global
 		{A7F5234C-5789-43E3-A1E1-56DCB68B1BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F5234C-5789-43E3-A1E1-56DCB68B1BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F5234C-5789-43E3-A1E1-56DCB68B1BD0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7B19605-5AA5-429D-95C3-6958F93AFD4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7B19605-5AA5-429D-95C3-6958F93AFD4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7B19605-5AA5-429D-95C3-6958F93AFD4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7B19605-5AA5-429D-95C3-6958F93AFD4B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{590F97A8-50B2-4262-B078-13AFE31E5A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{590F97A8-50B2-4262-B078-13AFE31E5A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{590F97A8-50B2-4262-B078-13AFE31E5A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{590F97A8-50B2-4262-B078-13AFE31E5A14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32D2E35A-8557-49F4-9485-AE940A251238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32D2E35A-8557-49F4-9485-AE940A251238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32D2E35A-8557-49F4-9485-AE940A251238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32D2E35A-8557-49F4-9485-AE940A251238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA8F59E-75CA-4F3F-82EC-080AF49885F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA8F59E-75CA-4F3F-82EC-080AF49885F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA8F59E-75CA-4F3F-82EC-080AF49885F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA8F59E-75CA-4F3F-82EC-080AF49885F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{32D2E35A-8557-49F4-9485-AE940A251238} = {F7EBB102-D6DC-4435-A1EF-914002BDCBA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F6E07174-E839-48E7-B6D7-3C82C3E9420E}
