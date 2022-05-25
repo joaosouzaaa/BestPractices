@@ -11,6 +11,7 @@ namespace BestPractices.IndependencyInjection.DependencyInjectionSettings.Servic
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenManagerService, TokenManagerService>();
+            services.AddScoped<IBraintreeService, BraintreeService>();
         }
     }
 }

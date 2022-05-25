@@ -23,6 +23,12 @@ namespace BestPractices.Domain.Enums
         UnexpectedError,
 
         [Description("Invalid Credencials")]
-        InvalidCredencials
+        InvalidCredencials,
+
+        [Description("{0}")]
+        FillError,
+
+        [Description("Your transaction failed with status code {0}")]
+        FailedTransaction
     }
 }

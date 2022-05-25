@@ -10,6 +10,7 @@ namespace BestPractices.IndependencyInjection.DependencyInjectionSettings.Reposi
         {
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IBraintreeRepository, BraintreeRepository>();
         }
     }
 }
