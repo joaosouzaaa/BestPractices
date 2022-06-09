@@ -1,8 +1,7 @@
 ﻿namespace BestPractices.Domain.Entities
 {
-    public class Supplier
+    public class Supplier : BaseEntity
     {
-        public int Id { get; set; }
         public string CNPJ { get; set; }
         public string CompanyName { get; set; }
         

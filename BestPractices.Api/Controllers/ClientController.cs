@@ -28,7 +28,7 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
         public async Task Put(ClientUpdateRequest clientUpdateRequest)
         {
-            await this._clientService.UpdateAsync(clientUpdateRequest);
+            await _clientService.UpdateAsync(clientUpdateRequest);
         }
 
         [HttpDelete("delete/{id:int}")]
@@ -38,7 +38,7 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
         public async Task Delete(int id)
         {
-            await this._clientService.DeleteAsync(id);
+            await _clientService.DeleteAsync(id);
         }
 
         [HttpGet("get/{id:int}")]
@@ -48,7 +48,7 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
         public async Task<ClientResponse> Get(int id)
         {
-            return await this._clientService.FindByIdAsync(id);
+            return await _clientService.FindByIdAsync(id);
         }
 
         [HttpGet("get")]
@@ -56,9 +56,9 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<List<ClientResponse>> Get()
+        public async Task<IEnumerable<ClientResponse>> Get()
         {
-            return await this._clientService.FindAllPersonsAsync();
+            return await _clientService.FindAllEntitiesAsync();
         }
     }
 }

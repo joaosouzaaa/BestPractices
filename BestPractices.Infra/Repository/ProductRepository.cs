@@ -5,9 +5,9 @@ using BestPractices.Infra.Repository.RepositoryBase;
 
 namespace BestPractices.Infra.Repository
 {
-    public class ClientRepository : BaseRepository<Client>, IClientRepository
+    public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
-        public ClientRepository(UserDbContext context) : base(context)
+        public ProductRepository(UserDbContext context) : base(context)
         {
         }
     }

@@ -1,8 +1,7 @@
 ﻿namespace BestPractices.Domain.Entities
 {
-    public class ShoppingCart
+    public class ShoppingCart : BaseEntity
     {
-        public int Id { get; set; }
         public int TotalItens { get; set; }
         public decimal TotalAmount { get; set; }
 

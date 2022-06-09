@@ -1,14 +1,10 @@
 ﻿using BestPractices.ApplicationService.DTO_s.Request.Client;
 using BestPractices.ApplicationService.DTO_s.Response;
+using BestPractices.ApplicationService.Interfaces.BaseService;
 
 namespace BestPractices.ApplicationService.Interfaces
 {
-    public interface IClientService
+    public interface IClientService : IBaseService<ClientSaveRequest, ClientUpdateRequest, ClientResponse>
     {
-        Task SaveAsync(ClientSaveRequest clientSaveRequest);
-        Task UpdateAsync(ClientUpdateRequest clientUpdateRequest);
-        Task DeleteAsync(int id);
-        Task<ClientResponse> FindByIdAsync(int id);
-        Task<List<ClientResponse>> FindAllPersonsAsync();
     }
 }

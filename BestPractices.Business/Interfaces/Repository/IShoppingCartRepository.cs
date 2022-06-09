@@ -3,7 +3,8 @@ using BestPractices.Domain.Entities;
 
 namespace BestPractices.Business.Interfaces.Repository
 {
-    public interface IClientRepository : IBaseRepository<Client>
+    public interface IShoppingCartRepository : IBaseRepository<ShoppingCart>
     {
+        Task<ShoppingCart> FindShoppingCartWithProducts(int id);
     }
 }

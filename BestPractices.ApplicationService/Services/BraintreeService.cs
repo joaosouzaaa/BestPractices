@@ -68,6 +68,7 @@ namespace BestPractices.ApplicationService.Services
             {
                 var transaction = result.Target;
                 return transaction;
+
             }
             else
             {
@@ -80,12 +81,12 @@ namespace BestPractices.ApplicationService.Services
             return null;
         }
 
-        public Transaction GetTransaction(string id)
+        public async Task<Transaction> GetTransaction(string id)
         {
             var gateway = _braintreeRepository.CreateGateway();
 
-            var transaction = gateway.Transaction.Find(id);
-
+            var transaction = await gateway.Transaction.FindAsync(id);
+            
             if (transactionSuccessStatuses.Contains(transaction.Status))
             {
                 return transaction;

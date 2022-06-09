@@ -8,6 +8,6 @@ namespace BestPractices.ApplicationService.Interfaces
     {
         Task<BraintreeResponse> GenerateClientToken();
         Transaction CreateTransaction(BraintreeSaveRequest braintreeSaveRequest);
-        Transaction GetTransaction(string id);
+        Task<Transaction> GetTransaction(string id);
     }
 }

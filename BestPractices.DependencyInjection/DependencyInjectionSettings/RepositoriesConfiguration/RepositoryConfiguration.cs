@@ -11,6 +11,9 @@ namespace BestPractices.IndependencyInjection.DependencyInjectionSettings.Reposi
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBraintreeRepository, BraintreeRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
         }
     }
 }

@@ -35,15 +35,8 @@ namespace BestPractices.Infra.Repository
             return result;
         }
 
-        public async Task<SignInResult> LoginAsync(string email, string password)
-        {
-            return await _signInManager.PasswordSignInAsync(email, password, false, false);
-        }
+        public async Task<SignInResult> LoginAsync(string email, string password) => await _signInManager.PasswordSignInAsync(email, password, false, false);
 
-        public async Task<User> GetUserByEmailAsync(string email)
-        {
-            var user = await Dbset.Include(cu => cu.Client).FirstOrDefaultAsync(cu => cu.Email == email);
-            return user;
-        }
+        public async Task<User> GetUserByEmailAsync(string email) => await Dbset.Include(cu => cu.Client).FirstOrDefaultAsync(cu => cu.Email == email);
     }
 }

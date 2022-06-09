@@ -45,7 +45,7 @@ namespace BestPractices.ApplicationService.Services
 
         public async Task DeleteAsync(int id)
         {
-            if (!_clientRepository.ClientExist(id))
+            if (!_clientRepository.EntityExist(id))
                 this._notificationHandler.AddNotification($"{id}", EMessage.NotFound.Description().FormatTo($"{id}"));
 
             await this._clientRepository.Delete(id);
@@ -53,21 +53,21 @@ namespace BestPractices.ApplicationService.Services
 
         public async Task<ClientResponse> FindByIdAsync(int id)
         {
-            if (!_clientRepository.ClientExist(id))
+            if (!_clientRepository.EntityExist(id))
                 this._notificationHandler.AddNotification($"{id}", EMessage.NotFound.Description().FormatTo($"{id}"));
 
-            var client = await this._clientRepository.GetClientById(id);
+            var client = await this._clientRepository.GetEntity(id);
 
             var clientResponse = client.MapTo<Client, ClientResponse>();
 
             return clientResponse;
         }
 
-        public async Task<List<ClientResponse>> FindAllPersonsAsync()
+        public async Task<IEnumerable<ClientResponse>> FindAllEntitiesAsync()
         {
-            var clients = await this._clientRepository.GetAllClients();
+            var clients = await this._clientRepository.GetAllEntities();
 
-            var clientsResponse = clients.MapTo<List<Client>, List<ClientResponse>>();
+            var clientsResponse = clients.MapTo<IEnumerable<Client>, IEnumerable<ClientResponse>>();
 
             return clientsResponse;
         }
