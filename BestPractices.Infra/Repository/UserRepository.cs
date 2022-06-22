@@ -30,9 +30,7 @@ namespace BestPractices.Infra.Repository
                 Client = user.Client
             };
 
-            var result = await _userManager.CreateAsync(userToBeCreated, userToBeCreated.PasswordHash);
-
-            return result;
+            return await _userManager.CreateAsync(userToBeCreated, userToBeCreated.PasswordHash);
         }
 
         public async Task<SignInResult> LoginAsync(string email, string password) => await _signInManager.PasswordSignInAsync(email, password, false, false);
