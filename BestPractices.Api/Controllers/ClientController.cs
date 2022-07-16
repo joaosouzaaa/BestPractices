@@ -1,6 +1,6 @@
-﻿using BestPractices.ApplicationService.DTO_s.Request.Client;
-using BestPractices.ApplicationService.DTO_s.Response;
-using BestPractices.ApplicationService.Interfaces;
+﻿using BestPractices.ApplicationService.Interfaces;
+using BestPractices.ApplicationService.Request.Client;
+using BestPractices.ApplicationService.Response.Client;
 using BestPractices.Business.Settings.NotificationSettings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

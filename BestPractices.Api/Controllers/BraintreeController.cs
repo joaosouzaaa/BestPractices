@@ -1,6 +1,6 @@
-﻿using BestPractices.ApplicationService.DTO_s.Request.Braintree;
-using BestPractices.ApplicationService.DTO_s.Response.Braintree;
-using BestPractices.ApplicationService.Interfaces;
+﻿using BestPractices.ApplicationService.Interfaces;
+using BestPractices.ApplicationService.Request.Braintree;
+using BestPractices.ApplicationService.Response.Braintree;
 using BestPractices.Business.Settings.NotificationSettings;
 using Braintree;
 using Microsoft.AspNetCore.Mvc;

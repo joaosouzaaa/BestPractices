@@ -1,9 +1,9 @@
-﻿using BestPractices.ApplicationService.DTO_s.Response.User;
+﻿using BestPractices.ApplicationService.Response.BearerToken;
 
 namespace BestPractices.ApplicationService.Interfaces
 {
     public interface ITokenManagerService
     {
-        Task<string> GenerateAccessToken(UserResponse clientUserResponse);
+        Task<BearerTokenResponse> GenerateAccessToken(string email);
     }
 }

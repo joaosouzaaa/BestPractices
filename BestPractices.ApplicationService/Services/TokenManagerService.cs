@@ -1,14 +1,12 @@
-﻿using BestPractices.ApplicationService.DTO_s.Response.User;
+﻿using BestPractices.ApplicationService.AutoMapperSettings;
 using BestPractices.ApplicationService.Interfaces;
+using BestPractices.ApplicationService.Response.BearerToken;
+using BestPractices.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BestPractices.ApplicationService.Services
 {
@@ -21,7 +19,7 @@ namespace BestPractices.ApplicationService.Services
             _configuration = configuration;
         }
 
-        public async Task<string> GenerateAccessToken(UserResponse clientUserResponse)
+        public async Task<BearerTokenResponse> GenerateAccessToken(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -34,7 +32,7 @@ namespace BestPractices.ApplicationService.Services
                 {
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, clientUserResponse.Email),
+                    new Claim(JwtRegisteredClaimNames.Email, email),
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = signIn
@@ -42,7 +40,13 @@ namespace BestPractices.ApplicationService.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var confirmToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+            var bearerToken = SetupToken(confirmToken);
+
+            return bearerToken.MapTo<BearerToken, BearerTokenResponse>();
         }
+
+        private BearerToken SetupToken(string token) => new BearerToken { Token = token };
     }
 }

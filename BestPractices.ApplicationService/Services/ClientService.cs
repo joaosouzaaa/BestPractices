@@ -1,7 +1,7 @@
 ﻿using BestPractices.ApplicationService.AutoMapperSettings;
-using BestPractices.ApplicationService.DTO_s.Request.Client;
-using BestPractices.ApplicationService.DTO_s.Response;
 using BestPractices.ApplicationService.Interfaces;
+using BestPractices.ApplicationService.Request.Client;
+using BestPractices.ApplicationService.Response.Client;
 using BestPractices.ApplicationService.Services.ServiceBase;
 using BestPractices.Business.Extensions;
 using BestPractices.Business.Interfaces.Notification;
@@ -10,7 +10,6 @@ using BestPractices.Business.Interfaces.Validation;
 using BestPractices.Business.Settings.PaginationSettings;
 using BestPractices.Domain.Entities;
 using BestPractices.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace BestPractices.ApplicationService.Services
 {

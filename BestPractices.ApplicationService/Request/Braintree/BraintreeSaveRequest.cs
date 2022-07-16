@@ -1,4 +1,4 @@
-﻿namespace BestPractices.ApplicationService.DTO_s.Request.Braintree
+﻿namespace BestPractices.ApplicationService.Request.Braintree
 {
     public class BraintreeSaveRequest
     {

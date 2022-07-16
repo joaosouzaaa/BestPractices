@@ -1,4 +1,4 @@
-﻿namespace BestPractices.ApplicationService.DTO_s.Request.Client
+﻿namespace BestPractices.ApplicationService.Request.Client
 {
     public class ClientSaveRequest
     {

@@ -10,6 +10,7 @@ namespace BestPractices.DependencyInjection.DependencyInjectionSettings
         public static void AddValidationConfiguration(this IServiceCollection services)
         {
             services.AddScoped<IValidate<Client>, ClientValidation>();
+            services.AddScoped<IValidate<User>, UserValidation>();
         }
     }
 }

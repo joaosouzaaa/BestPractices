@@ -1,6 +1,6 @@
-﻿namespace BestPractices.ApplicationService.DTO_s.Request.User
+﻿namespace BestPractices.ApplicationService.Response.User
 {
-    public class UserSaveRequest
+    public class UserResponse
     {
         public string Email { get; set; }
         public string Password { get; set; }

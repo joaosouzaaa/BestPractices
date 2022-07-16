@@ -1,19 +1,16 @@
-using BestPractices.ApplicationService.AutoMapperSettings;
-using BestPractices.ApplicationService.DTO_s.Request.Client;
+﻿using BestPractices.ApplicationService.AutoMapperSettings;
+using BestPractices.ApplicationService.Request.Client;
 using BestPractices.ApplicationService.Services;
-using BestPractices.Business.Interfaces.Notification;
 using BestPractices.Business.Interfaces.Repository;
-using BestPractices.Business.Interfaces.Validation;
 using BestPractices.Business.Settings.NotificationSettings;
 using BestPractices.Business.Settings.ValidationSettings;
 using BestPractices.Domain.Entities;
 using Moq;
-using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace UnitTests.ServiceTests.ClientServiceTests
+namespace UnitTests.ServiceTests
 {
     public class ClientServiceTests
     {

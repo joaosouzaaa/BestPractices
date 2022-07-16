@@ -18,7 +18,7 @@ namespace BestPractices.IndependencyInjection
             services.AddIdentityConfiguration(configuration);
             services.AddServiceConfiguration();
             services.AddRepositoryConfiguration();
-            services.AddOthersConfigurations();
+            services.AddOthersConfigurations(configuration);
             services.AddValidationConfiguration();
             services.AddPaginationConfiguration();
         }

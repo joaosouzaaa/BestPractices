@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using BestPractices.ApplicationService.DTO_s.Request.Client;
-using BestPractices.ApplicationService.DTO_s.Response;
+using BestPractices.ApplicationService.Request.Client;
+using BestPractices.ApplicationService.Response.Client;
 using BestPractices.Business.Settings.PaginationSettings;
 using BestPractices.Domain.Entities;
 

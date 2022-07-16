@@ -1,5 +1,5 @@
-﻿using BestPractices.ApplicationService.DTO_s.Request.Braintree;
-using BestPractices.ApplicationService.DTO_s.Response.Braintree;
+﻿using BestPractices.ApplicationService.Request.Braintree;
+using BestPractices.ApplicationService.Response.Braintree;
 using Braintree;
 
 namespace BestPractices.ApplicationService.Interfaces

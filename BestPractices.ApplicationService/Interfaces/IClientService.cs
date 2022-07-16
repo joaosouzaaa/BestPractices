@@ -1,6 +1,6 @@
-﻿using BestPractices.ApplicationService.DTO_s.Request.Client;
-using BestPractices.ApplicationService.DTO_s.Response;
-using BestPractices.ApplicationService.Interfaces.BaseService;
+﻿using BestPractices.ApplicationService.Interfaces.BaseService;
+using BestPractices.ApplicationService.Request.Client;
+using BestPractices.ApplicationService.Response.Client;
 
 namespace BestPractices.ApplicationService.Interfaces
 {

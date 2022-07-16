@@ -1,6 +1,6 @@
-﻿namespace BestPractices.ApplicationService.DTO_s.Request.Client
+﻿namespace BestPractices.ApplicationService.Response.Client
 {
-    public  class ClientUpdateRequest
+    public class ClientResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }

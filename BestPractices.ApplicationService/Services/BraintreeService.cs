@@ -1,6 +1,6 @@
-﻿using BestPractices.ApplicationService.DTO_s.Request.Braintree;
-using BestPractices.ApplicationService.DTO_s.Response.Braintree;
-using BestPractices.ApplicationService.Interfaces;
+﻿using BestPractices.ApplicationService.Interfaces;
+using BestPractices.ApplicationService.Request.Braintree;
+using BestPractices.ApplicationService.Response.Braintree;
 using BestPractices.ApplicationService.Services.ServiceBase;
 using BestPractices.Business.Extensions;
 using BestPractices.Business.Interfaces.Notification;

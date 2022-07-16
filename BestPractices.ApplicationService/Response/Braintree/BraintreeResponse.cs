@@ -1,4 +1,4 @@
-﻿namespace BestPractices.ApplicationService.DTO_s.Response.Braintree
+﻿namespace BestPractices.ApplicationService.Response.Braintree
 {
     public class BraintreeResponse
     {
