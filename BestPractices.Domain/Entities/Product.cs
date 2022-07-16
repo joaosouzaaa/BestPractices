@@ -1,4 +1,5 @@
-﻿using BestPractices.Domain.Enums;
+﻿using BestPractices.Domain.Entities.EntityBase;
+using BestPractices.Domain.Enums;
 
 namespace BestPractices.Domain.Entities
 {

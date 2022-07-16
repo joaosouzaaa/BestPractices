@@ -15,15 +15,13 @@ namespace BestPractices.Infra.Repository
 
         public BraintreeGateway CreateGateway()
         {
-            var gateway = new BraintreeGateway
+            return new BraintreeGateway
             {
                 Environment = Braintree.Environment.SANDBOX,
                 MerchantId = _configuration["Braintree:MerchantId"],
                 PublicKey = _configuration["Braintree:PublicKey"],
                 PrivateKey = _configuration["Braintree:PrivateKey"]
             };
-
-            return gateway;
         }
     }
 }

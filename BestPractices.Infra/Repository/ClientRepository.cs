@@ -1,13 +1,14 @@
-﻿using BestPractices.Business.Interfaces.Repository;
+﻿using BestPractices.Business.Interfaces.Pagination;
+using BestPractices.Business.Interfaces.Repository;
 using BestPractices.Domain.Entities;
 using BestPractices.Infra.Contexts;
 using BestPractices.Infra.Repository.RepositoryBase;
 
 namespace BestPractices.Infra.Repository
 {
-    public class ClientRepository : BaseRepository<Client>, IClientRepository
+    public class ClientRepository : BaseQueryRepository<Client>, IClientRepository
     {
-        public ClientRepository(UserDbContext context) : base(context)
+        public ClientRepository(IPagingService<Client> pagingService, UserDbContext context) : base(pagingService, context)
         {
         }
     }

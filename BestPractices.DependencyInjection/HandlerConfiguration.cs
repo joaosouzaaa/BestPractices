@@ -1,7 +1,4 @@
-﻿using BestPractices.DependencyInjection.DependencyInjectionSettings.IdentityConfiguration;
-using BestPractices.IndependencyInjection.DependencyInjectionSettings.OthersConfiguration;
-using BestPractices.IndependencyInjection.DependencyInjectionSettings.RepositoriesConfiguration;
-using BestPractices.IndependencyInjection.DependencyInjectionSettings.ServicesConfiguration;
+﻿using BestPractices.DependencyInjection.DependencyInjectionSettings;
 using BestPractices.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +18,9 @@ namespace BestPractices.IndependencyInjection
             services.AddIdentityConfiguration(configuration);
             services.AddServiceConfiguration();
             services.AddRepositoryConfiguration();
-            services.AddOthersConfiguration();
+            services.AddOthersConfigurations();
+            services.AddValidationConfiguration();
+            services.AddPaginationConfiguration();
         }
     }
 }

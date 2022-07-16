@@ -10,13 +10,12 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace BestPractices.DependencyInjection.DependencyInjectionSettings.IdentityConfiguration
+namespace BestPractices.DependencyInjection.DependencyInjectionSettings
 {
     public static class IdentityConfiguration
     {
         public static void AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddAuthentication();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

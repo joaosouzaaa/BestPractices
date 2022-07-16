@@ -5,8 +5,8 @@ namespace BestPractices.ApplicationService.Interfaces
 {
     public interface IUserService
     {
-        Task RegisterAsync(UserSaveRequest userSaveRequest);
-        Task<UserResponse> LoginAsync(UserSaveRequest userSaveRequest);
+        Task<bool> RegisterAsync(UserSaveRequest userSaveRequest);
+        Task<string> LoginAsync(UserSaveRequest userSaveRequest);
         Task<UserResponseClient> GetUserByEmailAsync(string email);
     }
 }

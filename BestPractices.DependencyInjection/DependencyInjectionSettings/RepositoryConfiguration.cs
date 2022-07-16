@@ -2,7 +2,7 @@
 using BestPractices.Infra.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BestPractices.IndependencyInjection.DependencyInjectionSettings.RepositoriesConfiguration
+namespace BestPractices.DependencyInjection.DependencyInjectionSettings
 {
     public static class RepositoryConfiguration
     {

@@ -3,11 +3,7 @@ using BestPractices.Domain.Entities;
 
 namespace BestPractices.Business.Interfaces.Repository
 {
-    public interface ISupplierRepository : IBaseRepository<Supplier>
+    public interface ISupplierRepository : IBaseQueryRepository<Supplier>
     {
-        Task<Supplier> FindSupplierByCnpj(string cnpj);
-        Task<Supplier> FindSupplierAndAddress(int id);
-        Task<Supplier> FindSupplierAndProducts(int id);
-        Task<Supplier> FindSupplierWithAllEntities(int id);
     }
 }

@@ -11,10 +11,5 @@ namespace BestPractices.Infra.Repository
         public ShoppingCartRepository(UserDbContext context) : base(context)
         {
         }
-
-        public async Task<ShoppingCart> FindShoppingCartWithProducts(int id) => 
-            await DbSet.AsNoTracking()
-            .Include(s => s.Products).AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Id == id);
     }
 }

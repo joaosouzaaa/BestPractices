@@ -42,9 +42,7 @@ namespace BestPractices.ApplicationService.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return encodedToken;
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

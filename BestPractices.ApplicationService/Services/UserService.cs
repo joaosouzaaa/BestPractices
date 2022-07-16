@@ -3,52 +3,53 @@ using BestPractices.ApplicationService.DTO_s.Request.User;
 using BestPractices.ApplicationService.DTO_s.Response.User;
 using BestPractices.ApplicationService.Interfaces;
 using BestPractices.ApplicationService.Services.ServiceBase;
+using BestPractices.Business.Extensions;
 using BestPractices.Business.Interfaces.Notification;
 using BestPractices.Business.Interfaces.Repository;
-using BestPractices.Business.Interfaces.Validation;
+using BestPractices.Business.Settings.NotificationSettings;
 using BestPractices.Domain.Entities;
 using BestPractices.Domain.Enums;
-using BestPractices.Domain.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace BestPractices.ApplicationService.Services
 {
-    public class UserService : BaseService, IUserService
+    public class UserService : BaseServiceNoValidation, IUserService
     {
         private readonly IUserRepository _userRepository;
-
-        public UserService(IValidationHandler validationHandler, INotificationHandler notificationHandler, IUserRepository userRepository) 
-            : base(validationHandler, notificationHandler)
+        private readonly ITokenManagerService _tokenManagerService;
+        
+        public UserService(IUserRepository userRepository, ITokenManagerService tokenManagerService, INotificationHandler notification) : base(notification)
         {
-            _userRepository = userRepository;
+            _tokenManagerService = tokenManagerService;
         }
 
-        public async Task RegisterAsync(UserSaveRequest userSaveRequest)
+        public async Task<bool> RegisterAsync(UserSaveRequest userSaveRequest)
         {
             var user = userSaveRequest.MapTo<UserSaveRequest, User>();
             user.Client = CreateNullClient();
 
             var result = await _userRepository.RegisterAsync(user);
 
-            if(result != IdentityResult.Success)
-            {
-                this._notificationHandler.AddNotification("Unexpected error", EMessage.UnexpectedError.Description());
-            }
+            if (!result.Succeeded)
+                return _notification.AddNotification(new DomainNotification("Identity", string.Join(", ", result.Errors)));
+
+            return result.Succeeded;
         }
 
-        public async Task<UserResponse> LoginAsync(UserSaveRequest userSaveRequest)
+        public async Task<string> LoginAsync(UserSaveRequest userSaveRequest)
         {
             var result = await _userRepository.LoginAsync(userSaveRequest.Email, userSaveRequest.Password);
 
-            if(result == SignInResult.Failed)
+            if (!result.Succeeded)
             {
-                this._notificationHandler.AddNotification("Login", EMessage.InvalidCredencials.Description());
+                _notification.AddNotification("Login", EMessage.InvalidCredencials.Description());
+                return null;
             }
 
             var user = userSaveRequest.MapTo<UserSaveRequest, User>();
             var userResponse = user.MapTo<User, UserResponse>();
 
-            return userResponse;
+            return await _tokenManagerService.GenerateAccessToken(userResponse);
         }
 
         public async Task<UserResponseClient> GetUserByEmailAsync(string email)
@@ -56,13 +57,9 @@ namespace BestPractices.ApplicationService.Services
             var user = await _userRepository.GetUserByEmailAsync(email);
 
             if(user == null)
-            {
-                this._notificationHandler.AddNotification($"{email}", EMessage.NotFound.Description().FormatTo($"{email}"));
-            }
+                _notification.AddNotification($"{email}", EMessage.NotFound.Description().FormatTo($"{email}"));
 
-            var userResponse = user.MapTo<User, UserResponseClient>();
-
-            return userResponse;
+            return user.MapTo<User, UserResponseClient>();
         }
 
         private Client CreateNullClient()

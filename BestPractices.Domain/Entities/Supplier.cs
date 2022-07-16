@@ -1,4 +1,6 @@
-﻿namespace BestPractices.Domain.Entities
+﻿using BestPractices.Domain.Entities.EntityBase;
+
+namespace BestPractices.Domain.Entities
 {
     public class Supplier : BaseEntity
     {

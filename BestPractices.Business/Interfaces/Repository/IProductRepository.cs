@@ -3,7 +3,7 @@ using BestPractices.Domain.Entities;
 
 namespace BestPractices.Business.Interfaces.Repository
 {
-    public interface IProductRepository : IBaseRepository<Product>
+    public interface IProductRepository : IBaseQueryRepository<Product>
     {
     }
 }

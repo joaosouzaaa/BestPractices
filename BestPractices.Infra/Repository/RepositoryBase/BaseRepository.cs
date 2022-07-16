@@ -1,7 +1,8 @@
 ﻿using BestPractices.Business.Interfaces.Repository.RepositoryBase;
-using BestPractices.Domain.Entities;
+using BestPractices.Domain.Entities.EntityBase;
 using BestPractices.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BestPractices.Infra.Repository.RepositoryBase
 {
@@ -9,55 +10,55 @@ namespace BestPractices.Infra.Repository.RepositoryBase
         where TEntity : BaseEntity
     {
         private readonly UserDbContext _context;
-        protected DbSet<TEntity> DbSet => _context.Set<TEntity>();
+        protected DbSet<TEntity> DbContextSet => _context.Set<TEntity>();
 
         public BaseRepository(UserDbContext context)
         {
             _context = context;
         }
 
-        private async Task Save() => await _context.SaveChangesAsync();
+        private async Task<bool> Save() => await _context.SaveChangesAsync() > 0;
 
-        public async Task Save(TEntity entity)
+        public virtual async Task<bool> SaveAsync(TEntity entity)
         {
-            DbSet.Add(entity);
+            DbContextSet.Add(entity);
 
             _context.Entry(entity).State = EntityState.Added;
 
-            await Save();
+            return await Save();
         }
 
-        public async Task Update(TEntity entity)
+        public virtual async Task<bool> UpdateAsync(TEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
 
-            await Save();
+            return await Save();
         }
 
-        public async Task Delete(int id)
+        public virtual async Task<bool> DeleteAsync(int id)
         {
             var entity = await GetEntity(id);
 
             _context.Entry(entity).State = EntityState.Deleted;
 
-            await Save();
+            return await Save();
         }
 
-        public async Task LogicalDelete(int id)
+        public virtual async Task<bool> LogicalDeleteAsync(int id)
         {
             var entity = await GetEntity(id);
             entity.Excluded = true;
 
             _context.Entry(entity).State = EntityState.Modified;
 
-            await Save();
+            return await Save();
         }
 
-        public async Task<TEntity> GetEntity(int id) => await DbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        public virtual async Task<bool> EntityExistAsync(int id) => await DbContextSet.AnyAsync(c => c.Id == id);
 
-        public async Task<IEnumerable<TEntity>> GetAllEntities() => await DbSet.AsNoTracking().ToListAsync();
+        public virtual async Task<TEntity> GetEntityByProperty(Expression<Func<TEntity, bool>> predicate) => await DbContextSet.AsNoTracking().FirstOrDefaultAsync(predicate);
 
-        public bool EntityExist(int id) => DbSet.Any(c => c.Id == id);
+        private async Task<TEntity> GetEntity(int id) => await DbContextSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
         async ValueTask IAsyncDisposable.DisposeAsync() => await _context.DisposeAsync();
     }

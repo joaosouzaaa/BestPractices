@@ -4,7 +4,8 @@ using BestPractices.ApplicationService.Interfaces.BaseService;
 
 namespace BestPractices.ApplicationService.Interfaces
 {
-    public interface IClientService : IBaseService<ClientSaveRequest, ClientUpdateRequest, ClientResponse>
+    public interface IClientService : IBaseQueryService<ClientSaveRequest, ClientUpdateRequest, ClientResponse>
     {
+
     }
 }

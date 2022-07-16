@@ -2,10 +2,9 @@
 using BestPractices.ApplicationService.DTO_s.Request.User;
 using BestPractices.ApplicationService.DTO_s.Response.User;
 using BestPractices.ApplicationService.Interfaces;
-using BestPractices.Business.NotificationSettings;
+using BestPractices.Business.Settings.NotificationSettings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace BestPractices.Api.Controllers
 {
@@ -14,12 +13,10 @@ namespace BestPractices.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ITokenManagerService _tokenManagerService;
 
         public UserController(IUserService userService, ITokenManagerService tokenManagerService)
         {
             _userService = userService;
-            _tokenManagerService = tokenManagerService;
         }
 
         [HttpPost("register")]
@@ -27,22 +24,16 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task RegisterAsync(UserSaveRequest userSaveRequest)
-        {
+        public async Task<bool> RegisterAsync(UserSaveRequest userSaveRequest) =>
             await _userService.RegisterAsync(userSaveRequest);
-        }
 
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<string> LoginAsync(UserSaveRequest userSaveRequest)
-        {
-            var loginResult = await _userService.LoginAsync(userSaveRequest);
-
-            return await _tokenManagerService.GenerateAccessToken(loginResult);
-        }
+        public async Task<string> LoginAsync(UserSaveRequest userSaveRequest) =>
+            await _userService.LoginAsync(userSaveRequest);
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet("current")]
@@ -50,11 +41,7 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<UserResponseClient> GetCurrentLoggedInUserAsync()
-        {
-            var email = HttpContext.GetUserEmail();
-
-            return await _userService.GetUserByEmailAsync(email);
-        }
+        public async Task<UserResponseClient> GetCurrentLoggedInUserAsync() =>
+            await _userService.GetUserByEmailAsync(HttpContext.GetUserEmail());
     }
 }

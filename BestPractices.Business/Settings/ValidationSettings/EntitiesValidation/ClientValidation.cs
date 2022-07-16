@@ -1,13 +1,18 @@
-﻿using BestPractices.Domain.Entities;
+﻿using BestPractices.Business.Extensions;
+using BestPractices.Domain.Entities;
 using BestPractices.Domain.Enums;
-using BestPractices.Domain.Extensions;
 using FluentValidation;
 
-namespace BestPractices.Domain.EntitiesValidation
+namespace BestPractices.Business.Settings.ValidationSettings.EntitiesValidation
 {
-    public class ClientValidation : AbstractValidator<Client>
+    public class ClientValidation : Validate<Client>
     {
         public ClientValidation()
+        {
+            SetRules();
+        }
+
+        private void SetRules()
         {
             RuleFor(p => p.Name).NotEmpty().WithMessage(EMessage.Required.Description()
                 .FormatTo("Client Name"));

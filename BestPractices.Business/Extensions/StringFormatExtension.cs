@@ -1,4 +1,4 @@
-﻿namespace BestPractices.Domain.Extensions
+﻿namespace BestPractices.Business.Extensions
 {
     public static class StringFormatExtension
     {

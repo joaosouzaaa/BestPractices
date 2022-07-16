@@ -1,4 +1,4 @@
-﻿namespace BestPractices.Domain.Entities
+﻿namespace BestPractices.Domain.Entities.EntityBase
 {
     public class BaseEntity
     {

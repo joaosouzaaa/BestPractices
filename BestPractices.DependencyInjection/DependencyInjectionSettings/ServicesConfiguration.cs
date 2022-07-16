@@ -2,7 +2,7 @@
 using BestPractices.ApplicationService.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BestPractices.IndependencyInjection.DependencyInjectionSettings.ServicesConfiguration
+namespace BestPractices.DependencyInjection.DependencyInjectionSettings
 {
     public static class ServicesConfiguration
     {

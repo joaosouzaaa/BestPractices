@@ -2,17 +2,16 @@
 using BestPractices.ApplicationService.DTO_s.Response.Braintree;
 using BestPractices.ApplicationService.Interfaces;
 using BestPractices.ApplicationService.Services.ServiceBase;
+using BestPractices.Business.Extensions;
 using BestPractices.Business.Interfaces.Notification;
 using BestPractices.Business.Interfaces.Repository;
-using BestPractices.Business.Interfaces.Validation;
 using BestPractices.Domain.Enums;
-using BestPractices.Domain.Extensions;
 using Braintree;
 using Microsoft.Extensions.Configuration;
 
 namespace BestPractices.ApplicationService.Services
 {
-    public class BraintreeService : BaseService, IBraintreeService
+    public class BraintreeService : BaseServiceNoValidation, IBraintreeService
     {
         private readonly IBraintreeRepository _braintreeRepository;
         private readonly IConfiguration _configuration;
@@ -27,8 +26,8 @@ namespace BestPractices.ApplicationService.Services
             TransactionStatus.SUBMITTED_FOR_SETTLEMENT
         };
 
-        public BraintreeService(IValidationHandler validationHandler, INotificationHandler notificationHandler, IBraintreeRepository braintreeRepository, IConfiguration configuration)
-            : base(validationHandler, notificationHandler)
+        public BraintreeService(INotificationHandler notificationHandler, IBraintreeRepository braintreeRepository, IConfiguration configuration)
+            : base(notificationHandler)
         {
             _braintreeRepository = braintreeRepository;
             _configuration = configuration;
@@ -48,14 +47,12 @@ namespace BestPractices.ApplicationService.Services
 
         public Transaction CreateTransaction(BraintreeSaveRequest braintreeSaveRequest)
         {
-            string nonceFromTheClient = _configuration["Braintree:Nonce"] ;
-
             var gateway = _braintreeRepository.CreateGateway();
 
             var request = new TransactionRequest
             {
                 Amount = braintreeSaveRequest.Amount,
-                PaymentMethodNonce = nonceFromTheClient,
+                PaymentMethodNonce = _configuration["Braintree:Nonce"],
                 Options = new TransactionOptionsRequest
                 {
                     SubmitForSettlement = true
@@ -65,18 +62,10 @@ namespace BestPractices.ApplicationService.Services
             var result = gateway.Transaction.Sale(request);
             
             if (result.IsSuccess())
-            {
-                var transaction = result.Target;
-                return transaction;
-
-            }
+                return result.Target;
             else
-            {
                 foreach (var error in result.Errors.DeepAll())
-                {
-                    _notificationHandler.AddNotification($"{error.Code}", EMessage.FillError.Description().FormatTo($"{error.Message}"));
-                }
-            }
+                    _notification.AddNotification($"{error.Code}", EMessage.FillError.Description().FormatTo($"{error.Message}"));
 
             return null;
         }
@@ -88,13 +77,9 @@ namespace BestPractices.ApplicationService.Services
             var transaction = await gateway.Transaction.FindAsync(id);
             
             if (transactionSuccessStatuses.Contains(transaction.Status))
-            {
                 return transaction;
-            }
             else
-            {
-                _notificationHandler.AddNotification("Transaction", EMessage.FailedTransaction.Description().FormatTo($"{transaction.Status}"));
-            };
+                _notification.AddNotification("Transaction", EMessage.FailedTransaction.Description().FormatTo($"{transaction.Status}"));
 
             return null;
         }
