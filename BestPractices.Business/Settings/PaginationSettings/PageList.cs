@@ -13,12 +13,10 @@
         public PageList(List<TEntity> items, int count, int pageNumber, int pageSize)
         {
             Result = items;
-
             TotalCount = count;
             PageSize = pageSize;
             CurrentPage = pageNumber;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-            Result.AddRange(items);
         }
     }
 }

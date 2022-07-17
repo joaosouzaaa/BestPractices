@@ -8,7 +8,6 @@ namespace BestPractices.DependencyInjection.DependencyInjectionSettings
     {
         public static void AddRepositoryConfiguration(this IServiceCollection services)
         {
-            services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBraintreeRepository, BraintreeRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();

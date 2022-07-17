@@ -16,6 +16,14 @@ namespace BestPractices.Infra.EntitiesMapping
             builder.Property(s => s.TotalAmount).HasColumnType("decimal(18,2)")
                 .HasColumnName("total_amount").IsRequired();
 
+            builder.Property(s => s.Finished).HasColumnType("bit")
+                .HasColumnName("finished").IsRequired();
+
+            builder.HasOne(s => s.User)
+                .WithMany(u => u.ShoppingCarts)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasMany(s => s.Products)
                 .WithOne(p => p.ShoppingCart)
                 .HasForeignKey(p => p.ShoppingCartId)

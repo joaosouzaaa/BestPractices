@@ -51,7 +51,7 @@ namespace BestPractices.DependencyInjection.DependencyInjectionSettings
                 options.Password.RequireUppercase = true;
 
                 options.SignIn.RequireConfirmedPhoneNumber = false;
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedAccount = false;
             }).AddEntityFrameworkStores<UserDbContext>()
                 .AddSignInManager<SignInManager<User>>()

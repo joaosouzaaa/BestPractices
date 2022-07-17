@@ -3,6 +3,7 @@
     public class PageParams
     {
         private const int MaxPageSize = 12;
+        public string IndexDescription { get; set; } = string.Empty;
         public int pageNumber = 1;
         public int pageSize = 10;
 

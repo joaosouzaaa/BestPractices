@@ -4,6 +4,7 @@ using BestPractices.ApplicationService.Request.User;
 using BestPractices.ApplicationService.Response.BearerToken;
 using BestPractices.ApplicationService.Response.User;
 using BestPractices.Business.Settings.NotificationSettings;
+using BestPractices.Business.Settings.PaginationSettings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,30 +26,15 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<bool> RegisterAsync(UserSaveRequest userSaveRequest) =>
+        public async Task<bool> RegisterAsync([FromBody] UserSaveRequest userSaveRequest) =>
             await _userService.RegisterAsync(userSaveRequest);
-
-        [HttpGet("confirmEmail")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<RedirectResult> ConfirmEmailAsync(string email, string token)
-        {
-            var confirmResult = await _userService.ConfirmEmailAsync(email, token);
-            
-            if (confirmResult)
-                return Redirect("http:localhost:3000/login");
-
-            return Redirect("http:localhost:3000/login?confirmed=false");
-        }
 
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<BearerTokenResponse> LoginAsync(UserSaveRequest userSaveRequest) =>
+        public async Task<BearerTokenResponse> LoginAsync([FromBody] UserSaveRequest userSaveRequest) =>
             await _userService.LoginAsync(userSaveRequest);
 
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -60,12 +46,39 @@ namespace BestPractices.Api.Controllers
         public async Task<UserResponseClient> GetCurrentLoggedInUserAsync() =>
             await _userService.GetUserByEmailAsync(HttpContext.GetUserEmail());
 
-        [HttpDelete("deleteuser")]
+        [HttpDelete("delete_user")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<bool> DeleteAsync(string userId) =>
+        public async Task<bool> DeleteAsync([FromQuery] string userId) =>
             await _userService.DeleteAsync(userId);
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPut("update_user")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        public async Task<bool> UpdateAsync([FromBody] UserUpdateRequest updateRequest) =>
+            await _userService.UpdateAsync(updateRequest);
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet("getall")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        public async Task<List<UserResponseClient>> GetAllAsync() =>
+            await _userService.FindAllEntitiesAsync();
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet("getall_pagination")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        public async Task<PageList<UserResponseClient>> GetAllAsyncWithPagination([FromQuery] PageParams pageParams) =>
+           await _userService.FindAllEntitiesWithPaginationAsync(pageParams);
     }
 }

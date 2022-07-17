@@ -12,6 +12,7 @@ namespace BestPractices.DependencyInjection.DependencyInjectionSettings
             services.AddScoped<IPagingService<Client>, PagingService<Client>>();
             services.AddScoped<IPagingService<Product>, PagingService<Product>>();
             services.AddScoped<IPagingService<Supplier>, PagingService<Supplier>>();
+            services.AddScoped<IPagingService<User>, PagingService<User>>();
         }
     }
 }

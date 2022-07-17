@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BestPractices.ApplicationService.Request.User;
 using BestPractices.ApplicationService.Response.User;
+using BestPractices.Business.Settings.PaginationSettings;
 using BestPractices.Domain.Entities;
 
 namespace BestPractices.ApplicationService.AutoMapperSettings.EntitiesProfile
@@ -20,8 +21,10 @@ namespace BestPractices.ApplicationService.AutoMapperSettings.EntitiesProfile
                 .ReverseMap();
 
             CreateMap<User, UserResponseClient>()
-                .ForMember(urc => urc.Email, map => map.MapFrom(u => u.Email))
                 .ForMember(urc => urc.ClientResponse, map => map.MapFrom(u => u.Client))
+                .ReverseMap();
+
+            CreateMap<PageList<User>, PageList<UserResponseClient>>()
                 .ReverseMap();
         }
     }

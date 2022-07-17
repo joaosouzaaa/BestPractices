@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BestPractices.Infra.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20220716185306_init")]
+    [Migration("20220717181820_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,40 @@ namespace BestPractices.Infra.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("BestPractices.Domain.Entities.FileImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Excluded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FileExtension")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("file_extension");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("file_name");
+
+                    b.Property<byte[]>("ImageBytes")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("image_bytes");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FilesImage");
+                });
+
             modelBuilder.Entity("BestPractices.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -135,19 +169,12 @@ namespace BestPractices.Infra.Migrations
                     b.Property<bool>("Excluded")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("FileImageId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("price");
-
-                    b.Property<byte[]>("ProductImage")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("product_image");
-
-                    b.Property<string>("ProductImageExtension")
-                        .IsRequired()
-                        .HasColumnType("varchar(4)")
-                        .HasColumnName("product_image_extension");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -168,6 +195,10 @@ namespace BestPractices.Infra.Migrations
                         .HasColumnName("transportation_price");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FileImageId")
+                        .IsUnique()
+                        .HasFilter("[FileImageId] IS NOT NULL");
 
                     b.HasIndex("ShoppingCartId");
 
@@ -198,7 +229,13 @@ namespace BestPractices.Infra.Migrations
                         .HasColumnType("int")
                         .HasColumnName("total_itens");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -458,6 +495,11 @@ namespace BestPractices.Infra.Migrations
 
             modelBuilder.Entity("BestPractices.Domain.Entities.Product", b =>
                 {
+                    b.HasOne("BestPractices.Domain.Entities.FileImage", "FileImage")
+                        .WithOne()
+                        .HasForeignKey("BestPractices.Domain.Entities.Product", "FileImageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("BestPractices.Domain.Entities.ShoppingCart", "ShoppingCart")
                         .WithMany("Products")
                         .HasForeignKey("ShoppingCartId")
@@ -470,9 +512,22 @@ namespace BestPractices.Infra.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("FileImage");
+
                     b.Navigation("ShoppingCart");
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("BestPractices.Domain.Entities.ShoppingCart", b =>
+                {
+                    b.HasOne("BestPractices.Domain.Entities.User", "User")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BestPractices.Domain.Entities.Supplier", b =>
@@ -556,6 +611,11 @@ namespace BestPractices.Infra.Migrations
             modelBuilder.Entity("BestPractices.Domain.Entities.Supplier", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("BestPractices.Domain.Entities.User", b =>
+                {
+                    b.Navigation("ShoppingCarts");
                 });
 #pragma warning restore 612, 618
         }

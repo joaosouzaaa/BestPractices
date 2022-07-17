@@ -7,5 +7,6 @@ namespace BestPractices.Domain.Entities
     {
         public int ClientId { get; set; }
         public Client Client { get; set; }
+        public List<ShoppingCart> ShoppingCarts { get; set; }
     }
 }

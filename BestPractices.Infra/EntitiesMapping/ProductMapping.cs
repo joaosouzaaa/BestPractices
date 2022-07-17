@@ -25,14 +25,13 @@ namespace BestPractices.Infra.EntitiesMapping
             builder.Property(p => p.Description).HasColumnType("varchar(max)")
                 .HasColumnName("description").IsRequired();
 
-            builder.Property(p => p.ProductImage).HasColumnType("varbinary(max)")
-                .HasColumnName("product_image").IsRequired();
-
-            builder.Property(p => p.ProductImageExtension).HasColumnType("varchar(4)")
-                .HasColumnName("product_image_extension").IsRequired();
-
             builder.Property(p => p.TransportationPrice).HasColumnType("decimal(18,2)")
                 .HasColumnName("transportation_price").IsRequired();
+
+            builder.HasOne(p => p.FileImage)
+                .WithOne()
+                .HasForeignKey<Product>(p => p.FileImageId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(p => p.Supplier)
                 .WithMany(s => s.Products)

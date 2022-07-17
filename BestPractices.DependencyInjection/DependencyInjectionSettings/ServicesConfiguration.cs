@@ -10,12 +10,12 @@ namespace BestPractices.DependencyInjection.DependencyInjectionSettings
     {
         public static void AddServiceConfiguration(this IServiceCollection services)
         {
-            services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenManagerService, TokenManagerService>();
             services.AddScoped<IBraintreeService, BraintreeService>();
             services.AddScoped<IEmailServiceConfig, EmailServiceConfig>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IShoppingCartService, ShoppingCartService>();
         }
     }
 }

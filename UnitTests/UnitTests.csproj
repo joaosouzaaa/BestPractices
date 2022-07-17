@@ -21,4 +21,8 @@
     <ProjectReference Include="..\BestPractices.ApplicationService\BestPractices.ApplicationService.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ServiceTests\" />
+  </ItemGroup>
+
 </Project>

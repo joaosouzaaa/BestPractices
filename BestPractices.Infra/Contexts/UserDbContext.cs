@@ -16,6 +16,7 @@ namespace BestPractices.Infra.Contexts
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<FileImage> FilesImage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -23,21 +24,20 @@ namespace BestPractices.Infra.Contexts
             builder.ApplyConfigurationsFromAssembly(typeof(UserDbContext).Assembly);
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override Task<int> SaveChangesAsync(CancellationToken cancellation = new CancellationToken())
         {
-            foreach(var entry in ChangeTracker.Entries().Where(entry => entry.GetType()
+            foreach (var entry in ChangeTracker.Entries()
+                .Where(entry => entry.Entity.GetType()
                 .GetProperty("RegistrationDate") != null))
             {
-                if(entry.State == EntityState.Added)
-                {
-                    entry.Property("RegistrationDate").CurrentValue = DateTime.UtcNow;
-                }
-                else if(entry.State == EntityState.Modified)
-                {
+                if (entry.State == EntityState.Added)
+                    entry.Property("RegistrationDate").CurrentValue = DateTime.Now;
+
+                if (entry.State == EntityState.Modified)
                     entry.Property("RegistrationDate").IsModified = false;
-                }
             }
-            return base.SaveChangesAsync(cancellationToken);
+
+            return base.SaveChangesAsync(cancellation);
         }
     }
 }

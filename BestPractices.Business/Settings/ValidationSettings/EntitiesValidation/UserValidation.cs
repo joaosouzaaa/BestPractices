@@ -14,6 +14,8 @@ namespace BestPractices.Business.Settings.ValidationSettings.EntitiesValidation
 
         private void SetRules()
         {
+            RuleFor(u => u.Client).SetValidator(new ClientValidation());
+
             RuleFor(u => u.Email).EmailAddress().WithMessage(EMessage.InvalidFormat.Description());
         }
     }
