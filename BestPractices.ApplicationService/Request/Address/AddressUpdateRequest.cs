@@ -1,9 +1,8 @@
-﻿using BestPractices.Domain.Entities.EntityBase;
-
-namespace BestPractices.Domain.Entities
+﻿namespace BestPractices.ApplicationService.Request.Address
 {
-    public class Address : BaseEntity
+    public class AddressUpdateRequest
     {
+        public int Id { get; set; }
         public string ZipCode { get; set; }
         public string City { get; set; }
         public string Street { get; set; }

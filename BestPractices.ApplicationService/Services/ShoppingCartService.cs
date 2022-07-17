@@ -1,12 +1,17 @@
-﻿using BestPractices.ApplicationService.Interfaces;
+﻿using BestPractices.ApplicationService.AutoMapperSettings;
+using BestPractices.ApplicationService.Interfaces;
 using BestPractices.ApplicationService.Request.ShoppingCart;
 using BestPractices.ApplicationService.Response.ShoppingCart;
 using BestPractices.ApplicationService.Services.ServiceBase;
+using BestPractices.Business.Extensions;
 using BestPractices.Business.Interfaces.Notification;
 using BestPractices.Business.Interfaces.Repository;
 using BestPractices.Business.Interfaces.Validation;
+using BestPractices.Business.Settings.NotificationSettings;
 using BestPractices.Business.Settings.PaginationSettings;
 using BestPractices.Domain.Entities;
+using BestPractices.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace BestPractices.ApplicationService.Services
 {
@@ -21,34 +26,66 @@ namespace BestPractices.ApplicationService.Services
             _shoppingCartRepository = shoppingCartRepository;
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            if (!await _shoppingCartRepository.EntityExistAsync(id))
+                return _notification.AddNotification(new DomainNotification("Id", EMessage.NotFound.Description().FormatTo("Shopping Cart")));
+
+            return await _shoppingCartRepository.DeleteAsync(id);
         }
 
-        public Task<List<ShoppingCartResponse>> FindAllEntitiesAsync()
+        public async Task<ShoppingCartResponse> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var shoppingCart = await _shoppingCartRepository.GetShoppingCart(id);
+
+            return shoppingCart.MapTo<ShoppingCart, ShoppingCartResponse>();
         }
 
-        public Task<PageList<ShoppingCartResponse>> FindAllEntitiesWithPaginationAsync(PageParams pageParams)
+        public async Task<bool> SaveAsync(ShoppingCartSaveRequest saveRequest)
         {
-            throw new NotImplementedException();
+            var shoppingCart = saveRequest.MapTo<ShoppingCartSaveRequest, ShoppingCart>();
+
+            if (!await ValidatedAsync(shoppingCart))
+                return false;
+            else
+                return await _shoppingCartRepository.SaveAsync(shoppingCart);
         }
 
-        public Task<ShoppingCartResponse> FindByIdAsync(int id)
+        public async Task<bool> UpdateAsync(ShoppingCartUpdateRequest updateRequest)
         {
-            throw new NotImplementedException();
+            var shoppingCart = updateRequest.MapTo<ShoppingCartUpdateRequest, ShoppingCart>();
+
+            if (!await ValidatedAsync(shoppingCart))
+                return false;
+            else
+                return await _shoppingCartRepository.UpdateAsync(shoppingCart);
         }
 
-        public Task<bool> SaveAsync(ShoppingCartSaveRequest clientSaveRequest)
+        public async Task<bool> AddProductAsync(int shoppingCartId, int productId)
         {
-            throw new NotImplementedException();
+            if (!await _shoppingCartRepository.EntityExistAsync(shoppingCartId))
+                return _notification.AddNotification(new DomainNotification("Id", EMessage.NotFound.Description().FormatTo("Shopping Cart")));
+
+            var shoppingCart = await _shoppingCartRepository.GetShoppingCart(shoppingCartId);
+            var product = await _shoppingCartRepository.FindByGenericAsync<Product>(productId, include: p => p.Include(p => p.ShoppingCart));
+
+            shoppingCart.Products.Add(product);
+
+            return await _shoppingCartRepository.UpdateAsync(shoppingCart);
+
         }
 
-        public Task<bool> UpdateAsync(ShoppingCartUpdateRequest clientUpdateRequest)
+        public async Task<bool> RemoveProductAsync(int shoppingCartId, int productId)
         {
-            throw new NotImplementedException();
+            if (!await _shoppingCartRepository.EntityExistAsync(shoppingCartId))
+                return _notification.AddNotification(new DomainNotification("Id", EMessage.NotFound.Description().FormatTo("Shopping Cart")));
+
+            var shoppingCart = await _shoppingCartRepository.GetShoppingCart(shoppingCartId);
+            var product = shoppingCart.Products.Find(p => p.Id == productId);
+
+            shoppingCart.Products.Remove(product);
+
+            return await _shoppingCartRepository.UpdateAsync(shoppingCart);
         }
     }
 }

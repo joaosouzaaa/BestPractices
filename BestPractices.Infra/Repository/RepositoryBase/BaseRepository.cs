@@ -9,7 +9,7 @@ namespace BestPractices.Infra.Repository.RepositoryBase
     public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         where TEntity : BaseEntity
     {
-        private readonly UserDbContext _context;
+        protected readonly UserDbContext _context;
         protected DbSet<TEntity> DbContextSet => _context.Set<TEntity>();
 
         public BaseRepository(UserDbContext context)

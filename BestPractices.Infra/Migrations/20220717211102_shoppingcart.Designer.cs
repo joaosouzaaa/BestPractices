@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BestPractices.Infra.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20220717181820_init")]
-    partial class init
+    [Migration("20220717211102_shoppingcart")]
+    partial class shoppingcart
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -217,6 +217,10 @@ namespace BestPractices.Infra.Migrations
 
                     b.Property<bool>("Excluded")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("Finished")
+                        .HasColumnType("bit")
+                        .HasColumnName("finished");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");

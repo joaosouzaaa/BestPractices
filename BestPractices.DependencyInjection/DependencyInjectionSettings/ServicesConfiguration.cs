@@ -16,6 +16,8 @@ namespace BestPractices.DependencyInjection.DependencyInjectionSettings
             services.AddScoped<IEmailServiceConfig, EmailServiceConfig>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<IProductService, ProductService>();
         }
     }
 }

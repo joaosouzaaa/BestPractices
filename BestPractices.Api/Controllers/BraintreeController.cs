@@ -3,10 +3,12 @@ using BestPractices.ApplicationService.Request.Braintree;
 using BestPractices.ApplicationService.Response.Braintree;
 using BestPractices.Business.Settings.NotificationSettings;
 using Braintree;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BestPractices.Api.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class BraintreeController : ControllerBase

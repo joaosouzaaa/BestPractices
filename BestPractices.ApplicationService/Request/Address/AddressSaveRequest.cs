@@ -1,8 +1,6 @@
-﻿using BestPractices.Domain.Entities.EntityBase;
-
-namespace BestPractices.Domain.Entities
+﻿namespace BestPractices.ApplicationService.Request.Address
 {
-    public class Address : BaseEntity
+    public class AddressSaveRequest
     {
         public string ZipCode { get; set; }
         public string City { get; set; }

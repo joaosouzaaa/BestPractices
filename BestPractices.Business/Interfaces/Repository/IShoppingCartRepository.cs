@@ -3,7 +3,8 @@ using BestPractices.Domain.Entities;
 
 namespace BestPractices.Business.Interfaces.Repository
 {
-    public interface IShoppingCartRepository : IBaseRepository<ShoppingCart>
+    public interface IShoppingCartRepository : IBaseRepository<ShoppingCart>, IGenericFind
     {
+        Task<ShoppingCart> GetShoppingCart(int id);
     }
 }

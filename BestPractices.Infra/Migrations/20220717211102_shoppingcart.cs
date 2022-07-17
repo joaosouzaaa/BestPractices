@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BestPractices.Infra.Migrations
 {
-    public partial class init : Migration
+    public partial class shoppingcart : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -248,6 +248,7 @@ namespace BestPractices.Infra.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     total_itens = table.Column<int>(type: "int", nullable: false),
                     total_amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    finished = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Excluded = table.Column<bool>(type: "bit", nullable: false),
                     RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false)

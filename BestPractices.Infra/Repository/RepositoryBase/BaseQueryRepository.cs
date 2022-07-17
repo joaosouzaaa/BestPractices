@@ -18,11 +18,14 @@ namespace BestPractices.Infra.Repository.RepositoryBase
             _pagingService = pagingService;
         }
 
-        public virtual async Task<TEntity> GetById(int id, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include)
+        public virtual async Task<TEntity> GetById(int id, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include, bool asNoTracking)
         {
-            var query = DbContextSet.AsNoTracking();
+            var query = (IQueryable<TEntity>)DbContextSet;
 
-            if(include !=  null)
+            if (asNoTracking)
+                query.AsNoTracking();
+
+            if (include !=  null)
                 query = include(query);
 
             return await query.FirstOrDefaultAsync(e => e.Id == id);
@@ -38,7 +41,7 @@ namespace BestPractices.Infra.Repository.RepositoryBase
             return await query.ToListAsync();
         }
 
-        public virtual async Task<PageList<TEntity>> FindAllWithPaginationIncludeEntities(PageParams pageParams, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include)
+        public virtual async Task<PageList<TEntity>> FindAllWithPagination(PageParams pageParams, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include)
         {
             var query = DbContextSet.AsNoTracking();
 
