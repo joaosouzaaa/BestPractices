@@ -18,8 +18,8 @@ namespace BestPractices.ApplicationService.Services.EmailService
             return new EmailConfig
             {
                 From = _emailConfig.From,
-                Name = _emailConfig.Name,
-                ApiKey = _emailConfig.ApiKey
+                Password = _emailConfig.Password,
+                ServerExchange = _emailConfig.ServerExchange
             };
         }
     }

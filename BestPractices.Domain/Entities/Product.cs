@@ -16,7 +16,7 @@ namespace BestPractices.Domain.Entities
         public FileImage? FileImage { get; set; }
         public int SupplierId { get; set; }
         public Supplier Supplier { get; set; }
-        public int ShoppingCartId { get; set; }
-        public ShoppingCart ShoppingCart { get; set; }
+        public int? ShoppingCartId { get; set; }
+        public ShoppingCart? ShoppingCart { get; set; }
     }
 }

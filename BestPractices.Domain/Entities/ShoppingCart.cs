@@ -11,5 +11,15 @@ namespace BestPractices.Domain.Entities
         public string UserId { get; set; }
         public User User { get; set; }
         public List<Product> Products { get; set; }
+
+        public ShoppingCart()
+        {
+            TotalItens = Products.Count;
+            TotalAmount = 0;
+            foreach (var product in Products)
+            {
+                TotalAmount += product.Price;
+            }
+        }
     }
 }

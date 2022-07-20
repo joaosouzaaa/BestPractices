@@ -7,7 +7,7 @@ namespace BestPractices.ApplicationService.Interfaces
     public interface IBraintreeService
     {
         Task<BraintreeResponse> GenerateClientToken();
-        Transaction CreateTransaction(BraintreeSaveRequest braintreeSaveRequest);
+        Task<Transaction> CreateTransaction(BraintreeSaveRequest braintreeSaveRequest);
         Task<Transaction> GetTransaction(string id);
     }
 }

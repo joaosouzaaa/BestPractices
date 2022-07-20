@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BestPractices.Infra.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20220717211102_shoppingcart")]
-    partial class shoppingcart
+    [Migration("20220720230333_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -184,7 +184,7 @@ namespace BestPractices.Infra.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ShoppingCartId")
+                    b.Property<int?>("ShoppingCartId")
                         .HasColumnType("int");
 
                     b.Property<int>("SupplierId")
@@ -507,8 +507,7 @@ namespace BestPractices.Infra.Migrations
                     b.HasOne("BestPractices.Domain.Entities.ShoppingCart", "ShoppingCart")
                         .WithMany("Products")
                         .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BestPractices.Domain.Entities.Supplier", "Supplier")
                         .WithMany("Products")
@@ -528,7 +527,7 @@ namespace BestPractices.Infra.Migrations
                     b.HasOne("BestPractices.Domain.Entities.User", "User")
                         .WithMany("ShoppingCarts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");

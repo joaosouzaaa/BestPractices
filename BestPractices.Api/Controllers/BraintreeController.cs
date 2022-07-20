@@ -33,8 +33,8 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public Transaction CreateTransaction(BraintreeSaveRequest braintreeSaveRequest) =>
-            _braintreeService.CreateTransaction(braintreeSaveRequest);
+        public async Task<Transaction> CreateTransaction(BraintreeSaveRequest braintreeSaveRequest) =>
+            await _braintreeService.CreateTransaction(braintreeSaveRequest);
 
         [HttpGet("find-transaction")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

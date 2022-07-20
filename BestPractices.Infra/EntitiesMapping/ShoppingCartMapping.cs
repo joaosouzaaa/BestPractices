@@ -22,7 +22,7 @@ namespace BestPractices.Infra.EntitiesMapping
             builder.HasOne(s => s.User)
                 .WithMany(u => u.ShoppingCarts)
                 .HasForeignKey(s => s.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(s => s.Products)
                 .WithOne(p => p.ShoppingCart)

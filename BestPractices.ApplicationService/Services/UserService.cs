@@ -1,5 +1,6 @@
 ﻿using BestPractices.ApplicationService.AutoMapperSettings;
 using BestPractices.ApplicationService.Interfaces;
+using BestPractices.ApplicationService.Interfaces.EmailService;
 using BestPractices.ApplicationService.Request.Client;
 using BestPractices.ApplicationService.Request.User;
 using BestPractices.ApplicationService.Response.BearerToken;
@@ -12,6 +13,7 @@ using BestPractices.Business.Interfaces.Validation;
 using BestPractices.Business.Settings.NotificationSettings;
 using BestPractices.Business.Settings.PaginationSettings;
 using BestPractices.Domain.Entities;
+using BestPractices.Domain.Entities.Email;
 using BestPractices.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +41,7 @@ namespace BestPractices.ApplicationService.Services
                 return false;
             
             AddEntitiesUser(user);
-
+            
             return await CallRegisterAsync(user);
         }
 

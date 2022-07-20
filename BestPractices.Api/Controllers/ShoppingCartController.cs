@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BestPractices.Api.Controllers
 {
-    //[Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ShoppingCartController : ControllerBase

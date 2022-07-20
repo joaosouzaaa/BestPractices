@@ -45,7 +45,7 @@ namespace BestPractices.ApplicationService.Services
             };
         }
 
-        public Transaction CreateTransaction(BraintreeSaveRequest braintreeSaveRequest)
+        public async Task<Transaction> CreateTransaction(BraintreeSaveRequest braintreeSaveRequest)
         {
             var gateway = _braintreeRepository.CreateGateway();
 
@@ -58,8 +58,8 @@ namespace BestPractices.ApplicationService.Services
                     SubmitForSettlement = true
                 }
             };
-
-            var result = gateway.Transaction.Sale(request);
+            
+            var result = await gateway.Transaction.SaleAsync(request);
             
             if (result.IsSuccess())
                 return result.Target;

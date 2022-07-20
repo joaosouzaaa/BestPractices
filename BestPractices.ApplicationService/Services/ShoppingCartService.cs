@@ -43,6 +43,9 @@ namespace BestPractices.ApplicationService.Services
 
         public async Task<bool> SaveAsync(ShoppingCartSaveRequest saveRequest)
         {
+            if (saveRequest.ProductsIds.Count == 0)
+                return _notification.AddNotification(new DomainNotification("Products", "Add at least one item"));
+
             var shoppingCart = saveRequest.MapTo<ShoppingCartSaveRequest, ShoppingCart>();
 
             if (!await ValidatedAsync(shoppingCart))
