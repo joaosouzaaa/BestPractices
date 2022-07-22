@@ -14,7 +14,7 @@ namespace BestPractices.Business.Settings.ValidationSettings.EntitiesValidation
 
         private void SetRules()
         {
-            RuleFor(f => f.ImageBytes).NotEmpty().WithMessage(EMessage.Required.Description().FormatTo("FileImage"));
+            RuleFor(f => f.ImageBytes).NotNull().WithMessage(EMessage.Required.Description().FormatTo("FileImage"));
 
             RuleFor(f => f.FileName).Length(3, 255).Must(f => !f.All(c => char.IsWhiteSpace(c)))
                 .WithMessage(f => string.IsNullOrWhiteSpace(f.FileName)

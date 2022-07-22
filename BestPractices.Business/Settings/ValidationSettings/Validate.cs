@@ -5,7 +5,7 @@ using FluentValidation.Results;
 
 namespace BestPractices.Business.Settings.ValidationSettings
 {
-    public class Validate<TEntity> : AbstractValidator<TEntity>, IValidate<TEntity>
+    public abstract class Validate<TEntity> : AbstractValidator<TEntity>, IValidate<TEntity>
         where TEntity : class
     {
         private ValidationResult ValidationResult { get; set; }
