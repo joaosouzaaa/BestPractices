@@ -7,6 +7,7 @@ namespace UnitTests.Builders
         private string _fileName = "file name";
         private string _fileExtension = "image/pdf";
         private byte[] _imageBytes = { 0x32, 0x00, 0x1E, 0x00 };
+
         public static FileImageBuilder NewObject()
         {
             return new FileImageBuilder();

@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public int TotalItens { get; set; }
-        public int TotalAmount { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 }

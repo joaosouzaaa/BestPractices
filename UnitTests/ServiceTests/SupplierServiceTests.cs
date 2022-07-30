@@ -19,8 +19,6 @@ namespace UnitTests.ServiceTests
         SupplierValidation _validation;
         SupplierService _service;
 
-        public SupplierSaveRequest SupplierSaveRequest { get; set; }
-
         public SupplierServiceTests()
         {
             _repository = new Mock<ISupplierRepository>();
@@ -29,41 +27,20 @@ namespace UnitTests.ServiceTests
             _service = new SupplierService(_repository.Object, _validation, _notification);
 
             AutoMapperHandler.Inicialize();
-
-            SaveRequestData();
-        }
-
-        private void SaveRequestData()
-        {
-            var companyAddress = new AddressSaveRequest
-            {
-                City = "curitiba",
-                Number = "1555",
-                State = "pr",
-                Street = "rua das ruas",
-                ZipCode = "82820160"
-            };
-
-            SupplierSaveRequest = new SupplierSaveRequest
-            {
-                CNPJ = "12365478965472",
-                CompanyName = "nome da companhia",
-                CompanyAddress = companyAddress
-            };
         }
 
         [Fact]
-        public async Task SaveAsync_Valid()
+        public async Task SaveAsync_ReturnsTrue()
         {
-            var supplier = SupplierSaveRequest.MapTo<SupplierSaveRequest, Supplier>();
+            var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
+            _repository.Setup(s => s.SaveAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(true));
 
-            _repository.Setup(s => s.SaveAsync(supplier)).Returns(Task.FromResult(true));
+            var serviceResult = await _service.SaveAsync(supplierSaveRequest);
+            var hasNotification = _notification.HasNotification();
 
-            var serviceResult = await _service.SaveAsync(SupplierSaveRequest);
-
-            _repository.Verify(s => s.SaveAsync(supplier), Times.Once());
-
+            _repository.Verify(s => s.SaveAsync(It.IsAny<Supplier>()), Times.Once());
             Assert.True(serviceResult);
+            Assert.False(hasNotification);
         }
     }
 }

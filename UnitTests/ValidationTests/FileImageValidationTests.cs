@@ -1,24 +1,14 @@
-﻿using BestPractices.Business.Settings.NotificationSettings;
-using BestPractices.Business.Settings.ValidationSettings;
-using BestPractices.Business.Settings.ValidationSettings.EntitiesValidation;
-using BestPractices.Domain.Entities;
-using FluentValidation;
-using Moq;
-using System.Threading.Tasks;
-using UnitTests.Builders;
-using Xunit;
+﻿using BestPractices.Business.Settings.ValidationSettings.EntitiesValidation;
 
 namespace UnitTests.ValidationTests
 {
     public class FileImageValidationTests
     {
         FileImageValidation _validate;
-        NotificationHandler _notification;
 
         public FileImageValidationTests()
         {
             _validate = new FileImageValidation();
-            _notification = new NotificationHandler();
         }
 
         [Fact]

@@ -12,14 +12,14 @@ namespace BestPractices.Domain.Entities
         public User User { get; set; }
         public List<Product> Products { get; set; }
 
-        public ShoppingCart()
-        {
-            TotalItens = Products.Count;
-            TotalAmount = 0;
-            foreach (var product in Products)
-            {
-                TotalAmount += product.Price;
-            }
-        }
+        //public ShoppingCart()
+        //{
+        //    TotalItens = Products.Count;
+        //    TotalAmount = 0;
+        //    foreach (var product in Products)
+        //    {
+        //        TotalAmount += product.Price;
+        //    }
+        //}
     }
 }

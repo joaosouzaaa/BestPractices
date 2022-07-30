@@ -11,9 +11,11 @@ namespace BestPractices.ApplicationService.AutoMapperSettings.EntitiesProfile
         public ProductProfile()
         {
             CreateMap<Product, ProductSaveRequest>()
+                .ForMember(ps => ps.Category, map => map.MapFrom(p => p.Category))
                 .ReverseMap();
             
             CreateMap<Product, ProductUpdateRequest>()
+                .ForMember(pu => pu.Category, map => map.MapFrom(p => p.Category))
                 .ReverseMap();
 
             CreateMap<Product, ProductResponse>()

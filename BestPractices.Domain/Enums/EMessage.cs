@@ -29,6 +29,6 @@ namespace BestPractices.Domain.Enums
         FillError,
 
         [Description("Your transaction failed with status code {0}")]
-        FailedTransaction
+        FailedTransaction,
     }
 }

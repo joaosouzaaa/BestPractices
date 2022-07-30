@@ -1,5 +1,4 @@
 ﻿using BestPractices.Business.Interfaces.Notification;
-using FluentValidation.Results;
 
 namespace BestPractices.Business.Settings.NotificationSettings
 {
@@ -22,8 +21,8 @@ namespace BestPractices.Business.Settings.NotificationSettings
 
             if (HasNotification() == true)
                 return false;
-            else
-                return true;
+
+            return true;
         }
 
         public void AddNotification(string key, string value) =>
@@ -32,10 +31,10 @@ namespace BestPractices.Business.Settings.NotificationSettings
         public void AddNotifications(IEnumerable<DomainNotification> notifications) =>
             _notifications.AddRange(notifications);
 
-        public void AddNotifications(ValidationResult validationResult)
+        public void AddNotifications(Dictionary<string, string> notifications)
         {
-            foreach (var error in validationResult.Errors)
-                AddNotification(error.ErrorCode, error.ErrorMessage);
+            foreach (var notification in notifications)
+                AddNotification(notification.Key, notification.Value);
         }
     }
 }

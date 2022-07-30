@@ -17,6 +17,9 @@ namespace BestPractices.Business.Settings.ValidationSettings.EntitiesValidation
             RuleFor(u => u.Client).SetValidator(new ClientValidation());
 
             RuleFor(u => u.Email).EmailAddress().WithMessage(EMessage.InvalidFormat.Description());
+
+            RuleFor(u => u.PasswordHash).Matches(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$")
+                .WithMessage("Must have at least 8 characters, at least one number and one special character");
         }
     }
 }

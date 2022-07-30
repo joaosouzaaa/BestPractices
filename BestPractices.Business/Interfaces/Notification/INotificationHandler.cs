@@ -10,6 +10,6 @@ namespace BestPractices.Business.Interfaces.Notification
         bool AddNotification(DomainNotification notification);
         void AddNotification(string key, string value);
         void AddNotifications(IEnumerable<DomainNotification> notifications);
-        void AddNotifications(ValidationResult validationResult);
+        void AddNotifications(Dictionary<string, string> notifications);
     }
 }

@@ -14,7 +14,6 @@ namespace BestPractices.Business.Settings.ValidationSettings.EntitiesValidation
 
         private void SetRules()
         {
-
             RuleFor(a => a.ZipCode).Length(8).Must(c => !c.All(c => char.IsWhiteSpace(c)))
                 .WithMessage(a => string.IsNullOrWhiteSpace(a.ZipCode)
                ? EMessage.Required.Description().FormatTo("Zip Code")

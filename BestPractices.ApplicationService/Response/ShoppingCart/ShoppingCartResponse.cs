@@ -7,7 +7,7 @@ namespace BestPractices.ApplicationService.Response.ShoppingCart
     {
         public int Id { get; set; }
         public int TotalItens { get; set; }
-        public int TotalAmount { get; set; }
+        public decimal TotalAmount { get; set; }
         public bool Finished { get; set; }
 
         public UserResponseClient UserResponseClient { get; set; }
