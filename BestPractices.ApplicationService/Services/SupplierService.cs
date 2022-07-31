@@ -61,8 +61,8 @@ namespace BestPractices.ApplicationService.Services
 
             if (!await ValidatedAsync(supplier))
                 return false;
-            else
-                return await _supplierRepository.SaveAsync(supplier);
+
+            return await _supplierRepository.SaveAsync(supplier);
         }
 
         public async Task<bool> UpdateAsync(SupplierUpdateRequest updateRequest)
@@ -71,14 +71,17 @@ namespace BestPractices.ApplicationService.Services
 
             if (!await ValidatedAsync(supplier))
                 return false;
-            else
-                return await _supplierRepository.UpdateAsync(supplier);
+                
+            return await _supplierRepository.UpdateAsync(supplier);
         }
 
         public async Task<bool> AddProductAsync(int supplierId, int productId)
         {
             if (!await _supplierRepository.EntityExistAsync(supplierId))
                 return _notification.AddNotification(new DomainNotification("Id", EMessage.NotFound.Description().FormatTo("Supplier")));
+
+            if (!await _supplierRepository.GenericExistAsync<Product>(productId))
+                return _notification.AddNotification(new DomainNotification("Id", EMessage.NotFound.Description().FormatTo("Product")));
 
             var supplier = await _supplierRepository.GetById(supplierId, include: s => s.Include(s => s.Products));
             var product = await _supplierRepository.FindByGenericAsync<Product>(productId, include: p => p.Include(p => p.Supplier));
@@ -96,6 +99,9 @@ namespace BestPractices.ApplicationService.Services
 
             var supplier = await _supplierRepository.GetById(supplierId, include: s => s.Include(s => s.Products));
             var product = supplier.Products.Find(p => p.Id == productId);
+
+            if(product == null)
+                return _notification.AddNotification(new DomainNotification("Id", EMessage.NotFound.Description().FormatTo("Product")));
 
             supplier.Products.Remove(product);
 

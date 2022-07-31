@@ -49,7 +49,7 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<ShoppingCartResponse> FindSupplierAsync([FromQuery] int id) =>
+        public async Task<ShoppingCartResponse> FindShoppingCartAsync([FromQuery] int id) =>
             await _shoppingCartService.FindByIdAsync(id);
 
         [HttpPut("add_product")]

@@ -19,11 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BestPractices.Api\BestPractices.Api.csproj" />
     <ProjectReference Include="..\BestPractices.ApplicationService\BestPractices.ApplicationService.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ControllerTests\" />
   </ItemGroup>
 
 </Project>

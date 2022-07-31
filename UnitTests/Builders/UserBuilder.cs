@@ -1,4 +1,6 @@
-﻿using BestPractices.Domain.Entities;
+﻿using BestPractices.ApplicationService.Request.User;
+using BestPractices.ApplicationService.Response.User;
+using BestPractices.Domain.Entities;
 
 namespace UnitTests.Builders
 {
@@ -7,6 +9,7 @@ namespace UnitTests.Builders
         private string _email = "joaoa@gmail.com";
         private string _phoneNumber = "41996583001";
         private string _password = "123@Joao";
+        private string _id = Guid.NewGuid().ToString();
 
         public static UserBuilder NewObject()
         {
@@ -24,11 +27,50 @@ namespace UnitTests.Builders
                 Client = client,
                 Email = _email,
                 EmailConfirmed = true,
-                Id = Guid.NewGuid().ToString(),
+                Id = _id,
                 PhoneNumber = _phoneNumber,
                 PasswordHash = _password,
                 ShoppingCarts = shoppingCartList,
                 UserName = _email
+            };
+        }
+
+        public UserSaveRequest SaveRequestBuild()
+        {
+            return new UserSaveRequest
+            {
+                Email = _email,
+                Password = _password
+            };
+        }
+
+        public UserUpdateRequest UpdateRequestBuild()
+        {
+            var clientUpdateRequest = ClientBuilder.NewObject().UpdateRequestBuild();
+            return new UserUpdateRequest
+            {
+                Id = _id,
+                ClientUpdateRequest = clientUpdateRequest
+            };
+        }
+
+        public UserResponse ResponseBuild()
+        {
+            return new UserResponse
+            {
+                Email = _email,
+                Password = _password
+            };
+        }
+
+        public UserResponseClient ResponseClientBuild()
+        {
+            var clientResponse = ClientBuilder.NewObject().ResponseBuild();
+            return new UserResponseClient
+            {
+                Email = _email,
+                Id = _id,
+                ClientResponse = clientResponse
             };
         }
 

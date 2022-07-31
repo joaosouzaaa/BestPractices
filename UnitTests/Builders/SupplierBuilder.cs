@@ -1,4 +1,6 @@
 ﻿using BestPractices.ApplicationService.Request.Supplier;
+using BestPractices.ApplicationService.Response.Product;
+using BestPractices.ApplicationService.Response.Supplier;
 using BestPractices.Domain.Entities;
 
 namespace UnitTests.Builders
@@ -36,6 +38,31 @@ namespace UnitTests.Builders
                 CompanyAddress = addressSaveRequest,
                 CNPJ = _cnpj,
                 CompanyName = _companyName
+            };
+        }
+
+        public SupplierUpdateRequest UpdateRequesBuild()
+        {
+            var addressUpdateRequest = AddressBuilder.NewObject().UpdateRequestBuild();
+            return new SupplierUpdateRequest
+            {
+                CompanyAddress = addressUpdateRequest,
+                CNPJ = _cnpj,
+                CompanyName = _companyName,
+                Id = 1
+            };
+        }
+
+        public SupplierResponse ResponseBuild()
+        {
+            var addressResponse = AddressBuilder.NewObject().ResponseBuild();
+            return new SupplierResponse
+            {
+                CompanyAddressResponse = addressResponse,
+                CNPJ = _cnpj,
+                CompanyName = _companyName,
+                Id = 1,
+                ProductsResponse = new List<ProductResponse>()
             };
         }
 

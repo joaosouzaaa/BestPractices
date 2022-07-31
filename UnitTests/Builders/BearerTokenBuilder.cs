@@ -1,9 +1,12 @@
-﻿using BestPractices.Domain.Entities;
+﻿using BestPractices.ApplicationService.Response.BearerToken;
+using BestPractices.Domain.Entities;
 
 namespace UnitTests.Builders
 {
     public class BearerTokenBuilder
     {
+        private string _token = "token here";
+
         public static BearerTokenBuilder NewObject()
         {
             return new BearerTokenBuilder();
@@ -13,7 +16,15 @@ namespace UnitTests.Builders
         {
             return new BearerToken
             {
-                Token = "token here"
+                Token = _token
+            };
+        }
+
+        public BearerTokenResponse ResponseBuild()
+        {
+            return new BearerTokenResponse
+            {
+                Token = _token
             };
         }
     }

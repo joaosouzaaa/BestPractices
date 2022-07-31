@@ -58,7 +58,7 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<List<SupplierResponse>> FindAllProductsAsync() =>
+        public async Task<List<SupplierResponse>> FindAllSuppliersAsync() =>
             await _supplierService.FindAllEntitiesAsync();
 
         [HttpGet("findall_suppliers_pagination")]
@@ -66,7 +66,7 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<PageList<SupplierResponse>> FindAllProductsPaginationAsync([FromQuery] PageParams pageParams) =>
+        public async Task<PageList<SupplierResponse>> FindAllSuppliersPaginationAsync([FromQuery] PageParams pageParams) =>
             await _supplierService.FindAllEntitiesWithPaginationAsync(pageParams);
 
         [HttpPut("add_product")]

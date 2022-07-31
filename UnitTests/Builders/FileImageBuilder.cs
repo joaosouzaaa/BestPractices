@@ -1,4 +1,5 @@
-﻿using BestPractices.Domain.Entities;
+﻿using BestPractices.ApplicationService.Response.FileImage;
+using BestPractices.Domain.Entities;
 
 namespace UnitTests.Builders
 {
@@ -20,6 +21,17 @@ namespace UnitTests.Builders
                 FileName = _fileName,
                 FileExtension = _fileExtension,
                 ImageBytes = _imageBytes,
+            };
+        }
+
+        public FileImageResponse ResponseBuild()
+        {
+            return new FileImageResponse
+            {
+                FileExtension = _fileExtension,
+                FileName = _fileName,
+                Id = 1,
+                ImageBytes = _imageBytes
             };
         }
 

@@ -1,4 +1,5 @@
 ﻿using BestPractices.ApplicationService.Request.Address;
+using BestPractices.ApplicationService.Response.Address;
 using BestPractices.Domain.Entities;
 
 namespace UnitTests.Builders
@@ -37,6 +38,34 @@ namespace UnitTests.Builders
             {
                 City = _city,
                 Complement = _complement,
+                Number = _number,
+                State = _state,
+                Street = _street,
+                ZipCode = _zipCode
+            };
+        }
+
+        public AddressUpdateRequest UpdateRequestBuild()
+        {
+            return new AddressUpdateRequest
+            {
+                City = _city,
+                Complement = _complement,
+                Id = 1,
+                Number = _number,
+                State = _state,
+                Street = _street,
+                ZipCode = _zipCode
+            };
+        }
+
+        public AddressResponse ResponseBuild()
+        {
+            return new AddressResponse
+            {
+                City = _city,
+                Complement = _complement,
+                Id = 1,
                 Number = _number,
                 State = _state,
                 Street = _street,

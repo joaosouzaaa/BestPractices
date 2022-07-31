@@ -16,7 +16,7 @@ namespace BestPractices.Api.Controllers
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService, ITokenManagerService tokenManagerService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -78,7 +78,7 @@ namespace BestPractices.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
-        public async Task<PageList<UserResponseClient>> GetAllAsyncWithPagination([FromQuery] PageParams pageParams) =>
+        public async Task<PageList<UserResponseClient>> GetAllWithPaginationAsync([FromQuery] PageParams pageParams) =>
            await _userService.FindAllEntitiesWithPaginationAsync(pageParams);
     }
 }

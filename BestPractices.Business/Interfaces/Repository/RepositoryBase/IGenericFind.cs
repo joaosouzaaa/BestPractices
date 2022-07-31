@@ -7,5 +7,8 @@ namespace BestPractices.Business.Interfaces.Repository.RepositoryBase
     {
         Task<TEntity> FindByGenericAsync<TEntity>(int id, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool asNoTracking = false)
             where TEntity : BaseEntity;
+
+        Task<bool> GenericExistAsync<TEntity>(int id)
+            where TEntity : BaseEntity;
     }
 }

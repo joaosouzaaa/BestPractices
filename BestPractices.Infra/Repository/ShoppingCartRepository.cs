@@ -27,6 +27,9 @@ namespace BestPractices.Infra.Repository
             return await query.FirstOrDefaultAsync(e => e.Id == id);
         }
 
+        public async Task<bool> GenericExistAsync<TEntity>(int id) where TEntity : BaseEntity =>
+            await _context.Set<TEntity>().AnyAsync(e => e.Id == id);
+
         public async Task<ShoppingCart> GetShoppingCart(int id) => await DbContextSet.Include(s => s.Products).Include(s => s.User).AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
     }
 }

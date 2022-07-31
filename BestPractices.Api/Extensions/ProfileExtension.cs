@@ -7,17 +7,13 @@ namespace BestPractices.Api.Extensions
         public static string GetUserEmail(this HttpContext httpContext)
         {
             if (httpContext == null)
-            {
                 return string.Empty;
-            }
 
-            var identity = httpContext.User.Identity as ClaimsIdentity;
+            var identityClaims = httpContext.User.Identity as ClaimsIdentity;
 
-            IEnumerable<Claim> claim = identity.Claims;
+            var claims = identityClaims.Claims;
 
-            var usernameClaim = claim
-                .Where(x => x.Type == ClaimTypes.Email)
-                .FirstOrDefault().Value;
+            var usernameClaim = claims.Where(c => c.Type == ClaimTypes.Email).FirstOrDefault().Value;
 
             return usernameClaim;
         }
