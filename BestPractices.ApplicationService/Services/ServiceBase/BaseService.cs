@@ -1,11 +1,10 @@
 ﻿using BestPractices.Business.Interfaces.Notification;
 using BestPractices.Business.Interfaces.Validation;
 using BestPractices.Business.Settings.NotificationSettings;
-using FluentValidation;
 
 namespace BestPractices.ApplicationService.Services.ServiceBase
 {
-    public class BaseService<TEntity> where TEntity : class
+    public abstract class BaseService<TEntity> where TEntity : class
     {
         protected readonly IValidate<TEntity> _validate;
         protected readonly INotificationHandler _notification;

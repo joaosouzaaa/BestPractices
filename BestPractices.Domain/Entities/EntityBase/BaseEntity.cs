@@ -1,6 +1,6 @@
 ﻿namespace BestPractices.Domain.Entities.EntityBase
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
         public int Id { get; set; }
         public bool Excluded { get; set; } = false;

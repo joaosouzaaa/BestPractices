@@ -1,6 +1,8 @@
 ﻿using BestPractices.Business.Settings.PaginationSettings;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Query;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 

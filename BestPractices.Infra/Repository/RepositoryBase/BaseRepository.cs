@@ -6,11 +6,11 @@ using System.Linq.Expressions;
 
 namespace BestPractices.Infra.Repository.RepositoryBase
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity>
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
         where TEntity : BaseEntity
     {
         protected readonly UserDbContext _context;
-        protected DbSet<TEntity> DbContextSet => _context.Set<TEntity>();
+        public virtual DbSet<TEntity> DbContextSet => _context.Set<TEntity>();
 
         public BaseRepository(UserDbContext context)
         {

@@ -2,7 +2,7 @@
 
 namespace BestPractices.ApplicationService.Services.ServiceBase
 {
-    public class BaseServiceNoValidation
+    public abstract class BaseServiceNoValidation
     {
         protected readonly INotificationHandler _notification;
 

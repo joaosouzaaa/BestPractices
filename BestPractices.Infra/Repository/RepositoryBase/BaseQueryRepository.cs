@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace BestPractices.Infra.Repository.RepositoryBase
 {
-    public class BaseQueryRepository<TEntity> : BaseRepository<TEntity>, IBaseQueryRepository<TEntity>
+    public abstract class BaseQueryRepository<TEntity> : BaseRepository<TEntity>, IBaseQueryRepository<TEntity>
         where TEntity : BaseEntity
     {
         private readonly IPagingService<TEntity> _pagingService;
