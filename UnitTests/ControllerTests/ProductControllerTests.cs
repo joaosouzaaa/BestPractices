@@ -2,7 +2,8 @@
 using BestPractices.ApplicationService.Interfaces;
 using BestPractices.ApplicationService.Response.Product;
 using BestPractices.Business.Settings.PaginationSettings;
-using UnitTests.Builders.Helpers;
+using Builders;
+using Builders.Helpers;
 
 namespace UnitTests.ControllerTests
 {
@@ -21,7 +22,7 @@ namespace UnitTests.ControllerTests
         public async Task AddProductAsync_ReturnsTrue()
         {
             var productSaveRequest = ProductBuilder.NewObject().SaveRequestBuild();
-            _service.Setup(s => s.SaveAsync(productSaveRequest)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.SaveAsync(productSaveRequest)).ReturnsAsync(true);
 
             var controllerResult = await _controller.AddProductAsync(productSaveRequest);
 
@@ -33,7 +34,7 @@ namespace UnitTests.ControllerTests
         public async Task AddProductAsync_ReturnsFalse()
         {
             var productSaveRequest = ProductBuilder.NewObject().SaveRequestBuild();
-            _service.Setup(s => s.SaveAsync(productSaveRequest)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.SaveAsync(productSaveRequest)).ReturnsAsync(false);
 
             var controllerResult = await _controller.AddProductAsync(productSaveRequest);
 
@@ -45,7 +46,7 @@ namespace UnitTests.ControllerTests
         public async Task UpdateProductAsync_ReturnsTrue()
         {
             var productUpdateRequest = ProductBuilder.NewObject().UpdateRequestBuild();
-            _service.Setup(s => s.UpdateAsync(productUpdateRequest)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.UpdateAsync(productUpdateRequest)).ReturnsAsync(true);
 
             var controllerResult = await _controller.UpdateProductAsync(productUpdateRequest);
 
@@ -57,7 +58,7 @@ namespace UnitTests.ControllerTests
         public async Task UpdateProductAsync_ReturnsFalse()
         {
             var productUpdateRequest = ProductBuilder.NewObject().UpdateRequestBuild();
-            _service.Setup(s => s.UpdateAsync(productUpdateRequest)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.UpdateAsync(productUpdateRequest)).ReturnsAsync(false);
 
             var controllerResult = await _controller.UpdateProductAsync(productUpdateRequest);
 
@@ -69,7 +70,7 @@ namespace UnitTests.ControllerTests
         public async Task DeleteProductAsync_ReturnsTrue()
         {
             var id = 1;
-            _service.Setup(s => s.DeleteAsync(id)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.DeleteAsync(id)).ReturnsAsync(true);
 
             var controllerResult = await _controller.DeleteProductAsync(id);
 
@@ -81,7 +82,7 @@ namespace UnitTests.ControllerTests
         public async Task DeleteProductAsync_ReturnsFalse()
         {
             var id = 1;
-            _service.Setup(s => s.DeleteAsync(id)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.DeleteAsync(id)).ReturnsAsync(false);
 
             var controllerResult = await _controller.DeleteProductAsync(id);
 
@@ -94,7 +95,7 @@ namespace UnitTests.ControllerTests
         {
             var id = 1;
             var productResponse = ProductBuilder.NewObject().ResponseBuild();
-            _service.Setup(s => s.FindByIdAsync(id)).Returns(Task.FromResult(productResponse));
+            _service.Setup(s => s.FindByIdAsync(id)).ReturnsAsync(productResponse);
 
             var controllerResult = await _controller.FindProductAsync(id);
 
@@ -107,7 +108,6 @@ namespace UnitTests.ControllerTests
         public async Task FindProductAsync_ReturnsNull()
         {
             var id = 1;
-            _service.Setup(s => s.FindByIdAsync(id)).Returns(Task.FromResult<ProductResponse>(null));
 
             var controllerResult = await _controller.FindProductAsync(id);
 
@@ -120,7 +120,7 @@ namespace UnitTests.ControllerTests
         {
             var productsResponseList = new List<ProductResponse>();
             productsResponseList.Add(ProductBuilder.NewObject().ResponseBuild());
-            _service.Setup(s => s.FindAllEntitiesAsync()).Returns(Task.FromResult(productsResponseList));
+            _service.Setup(s => s.FindAllEntitiesAsync()).ReturnsAsync(productsResponseList);
 
             var controllerResult = await _controller.FindAllProductsAsync();
 
@@ -135,8 +135,8 @@ namespace UnitTests.ControllerTests
             var pageParams = PageParamsBuilder.NewObject().DomainBuild();
             var productsResponseList = new List<ProductResponse>();
             productsResponseList.Add(ProductBuilder.NewObject().ResponseBuild());
-            var productResponsePageList = Utils.PageListBuilder<ProductResponse>(productsResponseList);
-            _service.Setup(s => s.FindAllEntitiesWithPaginationAsync(pageParams)).Returns(Task.FromResult(productResponsePageList));
+            var productResponsePageList = Utils.PageListBuilder(productsResponseList);
+            _service.Setup(s => s.FindAllEntitiesWithPaginationAsync(pageParams)).ReturnsAsync(productResponsePageList);
 
             var controllerResult = await _controller.FindAllProductsPaginationAsync(pageParams);
 
@@ -149,7 +149,6 @@ namespace UnitTests.ControllerTests
         public async Task FindAllProductsPaginationAsync_ReturnsNull()
         {
             var pageParams = PageParamsBuilder.NewObject().DomainBuild();
-            _service.Setup(s => s.FindAllEntitiesWithPaginationAsync(pageParams)).Returns(Task.FromResult<PageList<ProductResponse>>(null));
 
             var controllerResult = await _controller.FindAllProductsPaginationAsync(pageParams);
 

@@ -3,9 +3,10 @@ using BestPractices.ApplicationService.Interfaces;
 using BestPractices.ApplicationService.Response.BearerToken;
 using BestPractices.ApplicationService.Response.User;
 using BestPractices.Business.Settings.PaginationSettings;
+using Builders;
+using Builders.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using UnitTests.Builders.Helpers;
 
 namespace UnitTests.ControllerTests
 {
@@ -30,7 +31,7 @@ namespace UnitTests.ControllerTests
         public async Task RegisterAsync_ReturnsTrue()
         {
             var userSaveRequest = UserBuilder.NewObject().SaveRequestBuild();
-            _service.Setup(s => s.RegisterAsync(userSaveRequest)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.RegisterAsync(userSaveRequest)).ReturnsAsync(true);
 
             var controllerResult = await _controller.RegisterAsync(userSaveRequest);
 
@@ -42,7 +43,7 @@ namespace UnitTests.ControllerTests
         public async Task RegisterAsync_ReturnsFalse()
         {
             var userSaveRequest = UserBuilder.NewObject().SaveRequestBuild();
-            _service.Setup(s => s.RegisterAsync(userSaveRequest)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.RegisterAsync(userSaveRequest)).ReturnsAsync(false);
 
             var controllerResult = await _controller.RegisterAsync(userSaveRequest);
 
@@ -55,7 +56,7 @@ namespace UnitTests.ControllerTests
         {
             var userSaveRequest = UserBuilder.NewObject().SaveRequestBuild();
             var bearerTokenResponse = BearerTokenBuilder.NewObject().ResponseBuild();
-            _service.Setup(s => s.LoginAsync(userSaveRequest)).Returns(Task.FromResult(bearerTokenResponse));
+            _service.Setup(s => s.LoginAsync(userSaveRequest)).ReturnsAsync(bearerTokenResponse);
 
             var controllerResult = await _controller.LoginAsync(userSaveRequest);
 
@@ -68,7 +69,6 @@ namespace UnitTests.ControllerTests
         public async Task LoginAsync_ReturnsNull()
         {
             var userSaveRequest = UserBuilder.NewObject().SaveRequestBuild();
-            _service.Setup(s => s.LoginAsync(userSaveRequest)).Returns(Task.FromResult<BearerTokenResponse>(null));
 
             var controllerResult = await _controller.LoginAsync(userSaveRequest);
 
@@ -80,7 +80,7 @@ namespace UnitTests.ControllerTests
         public async Task GetCurrentLoggedInUserAsync_ReturnsEntity()
         {
             var userResponseClient = UserBuilder.NewObject().ResponseClientBuild();
-            _service.Setup(s => s.GetUserByEmailAsync(_email)).Returns(Task.FromResult(userResponseClient));
+            _service.Setup(s => s.GetUserByEmailAsync(_email)).ReturnsAsync(userResponseClient);
 
             var controllerResult = await _controller.GetCurrentLoggedInUserAsync();
 
@@ -92,8 +92,6 @@ namespace UnitTests.ControllerTests
         [Fact]
         public async Task GetCurrentLoggedInUserAsync_ReturnsNull()
         {
-            _service.Setup(s => s.GetUserByEmailAsync(_email)).Returns(Task.FromResult<UserResponseClient>(null));
-
             var controllerResult = await _controller.GetCurrentLoggedInUserAsync();
 
             _service.Verify(s => s.GetUserByEmailAsync(_email), Times.Once());
@@ -103,7 +101,7 @@ namespace UnitTests.ControllerTests
         [Fact]
         public async Task DeleteAsync_ReturnsTrue()
         {
-            _service.Setup(s => s.DeleteAsync(_userId.ToString())).Returns(Task.FromResult(true));
+            _service.Setup(s => s.DeleteAsync(_userId.ToString())).ReturnsAsync(true);
 
             var controllerResult = await _controller.DeleteAsync(_userId.ToString());
 
@@ -114,7 +112,7 @@ namespace UnitTests.ControllerTests
         [Fact]
         public async Task DeleteAsync_ReturnsFalse()
         {
-            _service.Setup(s => s.DeleteAsync(_userId.ToString())).Returns(Task.FromResult(false));
+            _service.Setup(s => s.DeleteAsync(_userId.ToString())).ReturnsAsync(false);
 
             var controllerResult = await _controller.DeleteAsync(_userId.ToString());
 
@@ -126,7 +124,7 @@ namespace UnitTests.ControllerTests
         public async Task UpdateAsync_ReturnsTrue()
         {
             var userUpdateRequest = UserBuilder.NewObject().UpdateRequestBuild();
-            _service.Setup(s => s.UpdateAsync(userUpdateRequest)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.UpdateAsync(userUpdateRequest)).ReturnsAsync(true);
 
             var controllerResult = await _controller.UpdateAsync(userUpdateRequest);
 
@@ -138,7 +136,7 @@ namespace UnitTests.ControllerTests
         public async Task UpdateAsync_ReturnsFalse()
         {
             var userUpdateRequest = UserBuilder.NewObject().UpdateRequestBuild();
-            _service.Setup(s => s.UpdateAsync(userUpdateRequest)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.UpdateAsync(userUpdateRequest)).ReturnsAsync(false);
 
             var controllerResult = await _controller.UpdateAsync(userUpdateRequest);
 
@@ -153,7 +151,7 @@ namespace UnitTests.ControllerTests
             {
                 UserBuilder.NewObject().ResponseClientBuild()
             };
-            _service.Setup(s => s.FindAllEntitiesAsync()).Returns(Task.FromResult(userResponseList));
+            _service.Setup(s => s.FindAllEntitiesAsync()).ReturnsAsync(userResponseList);
 
             var controllerResult = await _controller.GetAllAsync();
 
@@ -165,7 +163,7 @@ namespace UnitTests.ControllerTests
         [Fact]
         public async Task GetAllAsync_ReturnsNull()
         {
-            _service.Setup(s => s.FindAllEntitiesAsync()).Returns(Task.FromResult<List<UserResponseClient>>(null));
+            _service.Setup(s => s.FindAllEntitiesAsync());
 
             var controllerResult = await _controller.GetAllAsync();
 
@@ -181,8 +179,8 @@ namespace UnitTests.ControllerTests
             {
                 UserBuilder.NewObject().ResponseClientBuild()
             };
-            var userResponseClientPageList = Utils.PageListBuilder<UserResponseClient>(userResponseClientList);
-            _service.Setup(s => s.FindAllEntitiesWithPaginationAsync(pageParams)).Returns(Task.FromResult(userResponseClientPageList));
+            var userResponseClientPageList = Utils.PageListBuilder(userResponseClientList);
+            _service.Setup(s => s.FindAllEntitiesWithPaginationAsync(pageParams)).ReturnsAsync(userResponseClientPageList);
 
             var controllerResult = await _controller.GetAllWithPaginationAsync(pageParams);
 
@@ -195,7 +193,6 @@ namespace UnitTests.ControllerTests
         public async Task GetAllWithPaginationAsync_ReturnsNull()
         {
             var pageParams = PageParamsBuilder.NewObject().DomainBuild();
-            _service.Setup(s => s.FindAllEntitiesWithPaginationAsync(pageParams)).Returns(Task.FromResult<PageList<UserResponseClient>>(null));
 
             var controllerResult = await _controller.GetAllWithPaginationAsync(pageParams);
 

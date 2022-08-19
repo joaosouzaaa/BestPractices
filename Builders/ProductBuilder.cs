@@ -3,9 +3,9 @@ using BestPractices.ApplicationService.Request.Product;
 using BestPractices.ApplicationService.Response.Product;
 using BestPractices.Domain.Entities;
 using BestPractices.Domain.Enums;
-using UnitTests.Builders.Helpers;
+using Builders.Helpers;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class ProductBuilder
     {

@@ -1,12 +1,11 @@
 ﻿using BestPractices.Business.Settings.PaginationSettings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Query;
-using System.IO;
-using System.Linq;
+using Moq;
 using System.Security.Claims;
 using System.Text;
 
-namespace UnitTests.Builders.Helpers
+namespace Builders.Helpers
 {
     public class Utils
     {
@@ -43,5 +42,8 @@ namespace UnitTests.Builders.Helpers
                 new Claim(ClaimTypes.Email, email)
             }));
         }
+
+        public static Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> BuildIQueryableIncludeFunc<TEntity>() where TEntity : class =>
+            It.IsAny<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>();
     }
 }

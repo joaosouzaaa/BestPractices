@@ -1,6 +1,6 @@
 ﻿using BestPractices.Business.Settings.PaginationSettings;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class PageParamsBuilder
     {

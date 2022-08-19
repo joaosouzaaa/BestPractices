@@ -2,7 +2,7 @@
 using BestPractices.ApplicationService.Response.Client;
 using BestPractices.Domain.Entities;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class ClientBuilder
     {

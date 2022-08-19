@@ -20,5 +20,7 @@
     <ProjectReference Include="..\BestPractices.Business\BestPractices.Business.csproj" />
     <ProjectReference Include="..\BestPractices.DependencyInjection\BestPractices.DependencyInjection.csproj" />
   </ItemGroup>
-
+  <ItemGroup>
+	<InternalsVisibleTo Include="IntegrationTests" />
+  </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 using BestPractices.ApplicationService.Response.User;
 using BestPractices.Domain.Entities;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class UserBuilder
     {

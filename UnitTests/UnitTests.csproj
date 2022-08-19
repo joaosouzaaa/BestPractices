@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BestPractices.Api\BestPractices.Api.csproj" />
     <ProjectReference Include="..\BestPractices.ApplicationService\BestPractices.ApplicationService.csproj" />
+    <ProjectReference Include="..\Builders\Builders.csproj" />
   </ItemGroup>
 
 </Project>

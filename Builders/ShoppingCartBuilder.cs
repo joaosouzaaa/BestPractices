@@ -3,7 +3,7 @@ using BestPractices.ApplicationService.Response.Product;
 using BestPractices.ApplicationService.Response.ShoppingCart;
 using BestPractices.Domain.Entities;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class ShoppingCartBuilder
     {

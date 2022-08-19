@@ -1,7 +1,7 @@
 ﻿using BestPractices.ApplicationService.Response.FileImage;
 using BestPractices.Domain.Entities;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class FileImageBuilder
     {

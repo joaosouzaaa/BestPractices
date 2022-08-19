@@ -1,6 +1,6 @@
 ﻿using BestPractices.ApplicationService.Response.Braintree;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class BraintreeBuilder
     {

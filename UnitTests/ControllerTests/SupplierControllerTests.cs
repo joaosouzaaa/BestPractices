@@ -2,7 +2,8 @@
 using BestPractices.ApplicationService.Interfaces;
 using BestPractices.ApplicationService.Response.Supplier;
 using BestPractices.Business.Settings.PaginationSettings;
-using UnitTests.Builders.Helpers;
+using Builders;
+using Builders.Helpers;
 
 namespace UnitTests.ControllerTests
 {
@@ -21,7 +22,7 @@ namespace UnitTests.ControllerTests
         public async Task AddSupplierAsync_ReturnsTrue()
         {
             var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
-            _service.Setup(s => s.SaveAsync(supplierSaveRequest)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.SaveAsync(supplierSaveRequest)).ReturnsAsync(true);
 
             var controllerResult = await _controller.AddSupplierAsync(supplierSaveRequest);
 
@@ -33,7 +34,7 @@ namespace UnitTests.ControllerTests
         public async Task AddSupplierAsync_ReturnsFalse()
         {
             var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
-            _service.Setup(s => s.SaveAsync(supplierSaveRequest)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.SaveAsync(supplierSaveRequest)).ReturnsAsync(false);
 
             var controllerResult = await _controller.AddSupplierAsync(supplierSaveRequest);
 
@@ -45,7 +46,7 @@ namespace UnitTests.ControllerTests
         public async Task UpdateSupplierAsync_ReturnsTrue()
         {
             var supplierUpdateRequest = SupplierBuilder.NewObject().UpdateRequesBuild();
-            _service.Setup(s => s.UpdateAsync(supplierUpdateRequest)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.UpdateAsync(supplierUpdateRequest)).ReturnsAsync(true);
 
             var controllerResult = await _controller.UpdateSupplierAsync(supplierUpdateRequest);
 
@@ -57,7 +58,7 @@ namespace UnitTests.ControllerTests
         public async Task UpdateSupplierAsync_ReturnsFalse()
         {
             var supplierUpdateRequest = SupplierBuilder.NewObject().UpdateRequesBuild();
-            _service.Setup(s => s.UpdateAsync(supplierUpdateRequest)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.UpdateAsync(supplierUpdateRequest)).ReturnsAsync(false);
 
             var controllerResult = await _controller.UpdateSupplierAsync(supplierUpdateRequest);
 
@@ -69,7 +70,7 @@ namespace UnitTests.ControllerTests
         public async Task DeleteSupplierAsync_ReturnsTrue()
         {
             var id = 1;
-            _service.Setup(s => s.DeleteAsync(id)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.DeleteAsync(id)).ReturnsAsync(true);
 
             var controllerResult = await _controller.DeleteSupplierAsync(id);
 
@@ -81,7 +82,7 @@ namespace UnitTests.ControllerTests
         public async Task DeleteSupplierAsync_ReturnsFalse()
         {
             var id = 1;
-            _service.Setup(s => s.DeleteAsync(id)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.DeleteAsync(id)).ReturnsAsync(false);
 
             var controllerResult = await _controller.DeleteSupplierAsync(id);
 
@@ -94,7 +95,7 @@ namespace UnitTests.ControllerTests
         {
             var id = 1;
             var supplierResponse = SupplierBuilder.NewObject().ResponseBuild();
-            _service.Setup(s => s.FindByIdAsync(id)).Returns(Task.FromResult(supplierResponse));
+            _service.Setup(s => s.FindByIdAsync(id)).ReturnsAsync(supplierResponse);
 
             var controllerResult = await _controller.FindSupplierAsync(id);
 
@@ -107,7 +108,6 @@ namespace UnitTests.ControllerTests
         public async Task FindSupplierAsync_ReturnsNull()
         {
             var id = 1;
-            _service.Setup(s => s.FindByIdAsync(id)).Returns(Task.FromResult<SupplierResponse>(null));
 
             var controllerResult = await _controller.FindSupplierAsync(id);
 
@@ -122,7 +122,7 @@ namespace UnitTests.ControllerTests
             {
                 SupplierBuilder.NewObject().ResponseBuild()
             };
-            _service.Setup(s => s.FindAllEntitiesAsync()).Returns(Task.FromResult(suppliersResponseList));
+            _service.Setup(s => s.FindAllEntitiesAsync()).ReturnsAsync(suppliersResponseList);
 
             var controllerResult = await _controller.FindAllSuppliersAsync();
 
@@ -134,8 +134,6 @@ namespace UnitTests.ControllerTests
         [Fact]
         public async Task FindAllSuppliersAsync_ReturnsNull()
         {
-            _service.Setup(s => s.FindAllEntitiesAsync()).Returns(Task.FromResult<List<SupplierResponse>>(null));
-
             var controllerResult = await _controller.FindAllSuppliersAsync();
 
             _service.Verify(s => s.FindAllEntitiesAsync(), Times.Once());
@@ -150,8 +148,8 @@ namespace UnitTests.ControllerTests
             {
                 SupplierBuilder.NewObject().ResponseBuild()
             };
-            var supplierResponsePageList = Utils.PageListBuilder<SupplierResponse>(suppliersResponseList);
-            _service.Setup(s => s.FindAllEntitiesWithPaginationAsync(pageParams)).Returns(Task.FromResult(supplierResponsePageList));
+            var supplierResponsePageList = Utils.PageListBuilder(suppliersResponseList);
+            _service.Setup(s => s.FindAllEntitiesWithPaginationAsync(pageParams)).ReturnsAsync(supplierResponsePageList);
 
             var controllerResult = await _controller.FindAllSuppliersPaginationAsync(pageParams);
 
@@ -164,7 +162,6 @@ namespace UnitTests.ControllerTests
         public async Task FindAllSuppliersPaginationAsync_ReturnsNull()
         {
             var pageParams = PageParamsBuilder.NewObject().DomainBuild();
-            _service.Setup(s => s.FindAllEntitiesWithPaginationAsync(pageParams)).Returns(Task.FromResult<PageList<SupplierResponse>>(null));
 
             var controllerResult = await _controller.FindAllSuppliersPaginationAsync(pageParams);
 
@@ -177,7 +174,7 @@ namespace UnitTests.ControllerTests
         {
             var supplierId = 1;
             var productId = 1;
-            _service.Setup(s => s.AddProductAsync(supplierId, productId)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.AddProductAsync(supplierId, productId)).ReturnsAsync(true);
 
             var controllerResult = await _controller.AddProductAsync(supplierId, productId);
 
@@ -190,7 +187,7 @@ namespace UnitTests.ControllerTests
         {
             var supplierId = 1;
             var productId = 1;
-            _service.Setup(s => s.AddProductAsync(supplierId, productId)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.AddProductAsync(supplierId, productId)).ReturnsAsync(false);
 
             var controllerResult = await _controller.AddProductAsync(supplierId, productId);
 
@@ -203,7 +200,7 @@ namespace UnitTests.ControllerTests
         {
             var supplierId = 1;
             var productId = 1;
-            _service.Setup(s => s.RemoveProductAsync(supplierId, productId)).Returns(Task.FromResult(true));
+            _service.Setup(s => s.RemoveProductAsync(supplierId, productId)).ReturnsAsync(true);
 
             var controllerResult = await _controller.RemoveProductAsync(supplierId, productId);
 
@@ -216,7 +213,7 @@ namespace UnitTests.ControllerTests
         {
             var supplierId = 1;
             var productId = 1;
-            _service.Setup(s => s.RemoveProductAsync(supplierId, productId)).Returns(Task.FromResult(false));
+            _service.Setup(s => s.RemoveProductAsync(supplierId, productId)).ReturnsAsync(false);
 
             var controllerResult = await _controller.RemoveProductAsync(supplierId, productId);
 

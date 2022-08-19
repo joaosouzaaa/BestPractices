@@ -1,7 +1,7 @@
 ﻿using BestPractices.ApplicationService.Response.BearerToken;
 using BestPractices.Domain.Entities;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class BearerTokenBuilder
     {

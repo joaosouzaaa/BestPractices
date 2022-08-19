@@ -2,8 +2,9 @@
 using BestPractices.ApplicationService.Response.Product;
 using BestPractices.ApplicationService.Response.Supplier;
 using BestPractices.Domain.Entities;
+using Builders;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class SupplierBuilder
     {

@@ -2,7 +2,7 @@
 using BestPractices.ApplicationService.Response.Address;
 using BestPractices.Domain.Entities;
 
-namespace UnitTests.Builders
+namespace Builders
 {
     public class AddressBuilder
     {

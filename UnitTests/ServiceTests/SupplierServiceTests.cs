@@ -1,20 +1,14 @@
 ﻿using BestPractices.ApplicationService.AutoMapperSettings;
-using BestPractices.ApplicationService.Request.Address;
-using BestPractices.ApplicationService.Request.Supplier;
 using BestPractices.ApplicationService.Services;
 using BestPractices.Business.Interfaces.Repository;
 using BestPractices.Business.Settings.NotificationSettings;
 using BestPractices.Business.Settings.PaginationSettings;
 using BestPractices.Business.Settings.ValidationSettings.EntitiesValidation;
 using BestPractices.Domain.Entities;
-using BestPractices.Domain.Entities.EntityBase;
-using Microsoft.EntityFrameworkCore;
+using Builders;
+using Builders.Helpers;
 using Microsoft.EntityFrameworkCore.Query;
-using Moq;
 using System.Linq;
-using System.Threading.Tasks;
-using UnitTests.Builders.Helpers;
-using Xunit;
 
 namespace UnitTests.ServiceTests
 {
@@ -36,33 +30,30 @@ namespace UnitTests.ServiceTests
         }
 
         [Fact]
-        public async Task DeleteAsync_ReturnsTrue_HasNotificationFalse()
+        public async Task DeleteAsync_ReturnsTrue()
         {
             var id = 1;
-            _repository.Setup(r => r.EntityExistAsync(id)).Returns(Task.FromResult(true));
-            _repository.Setup(r => r.DeleteAsync(id)).Returns(Task.FromResult(true));
+            _repository.Setup(r => r.EntityExistAsync(id)).ReturnsAsync(true);
+            _repository.Setup(r => r.DeleteAsync(id)).ReturnsAsync(true);
 
             var serviceResult = await _service.DeleteAsync(id);
-            var hasNotification = _notification.HasNotification();
 
+            _repository.Verify(r => r.EntityExistAsync(id), Times.Once());
             _repository.Verify(r => r.DeleteAsync(id), Times.Once());
             Assert.True(serviceResult);
-            Assert.False(hasNotification);
         }
 
         [Fact]
-        public async Task DeleteAsync_ReturnsFalse_HasNotificationTrue()
+        public async Task DeleteAsync_EntityDoesNotExist_ReturnsFalse()
         {
             var id = 1;
-            _repository.Setup(r => r.EntityExistAsync(id)).Returns(Task.FromResult(false));
-            _repository.Setup(r => r.DeleteAsync(id)).Returns(Task.FromResult(false));
+            _repository.Setup(r => r.EntityExistAsync(id)).ReturnsAsync(false);
 
             var serviceResult = await _service.DeleteAsync(id);
-            var hasNotification = _notification.HasNotification();
 
-            _repository.Verify(r => r.DeleteAsync(id), Times.Exactly(0));
+            _repository.Verify(r => r.EntityExistAsync(id), Times.Once());
+            _repository.Verify(r => r.DeleteAsync(id), Times.Never());
             Assert.False(serviceResult);
-            Assert.True(hasNotification);
         }
 
         [Fact]
@@ -72,23 +63,22 @@ namespace UnitTests.ServiceTests
             {
                 SupplierBuilder.NewObject().DomainBuild()
             };
-            _repository.Setup(r => r.GetAll(It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>())).Returns(Task.FromResult(supplierList));
+            _repository.Setup(r => r.GetAll(Utils.BuildIQueryableIncludeFunc<Supplier>())).ReturnsAsync(supplierList);
 
             var serviceResult = await _service.FindAllEntitiesAsync();
 
-            _repository.Verify(r => r.GetAll(It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>()), Times.Once());
-            Assert.NotNull(_repository.Object.GetAll(It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>()));
+            _repository.Verify(r => r.GetAll(Utils.BuildIQueryableIncludeFunc<Supplier>()), Times.Once());
             Assert.NotNull(serviceResult);
         }
 
         [Fact]
         public async Task FindAllEntitiesAsync_ReturnsNull()
         {
-            _repository.Setup(r => r.GetAll(It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>())).Returns(Task.FromResult<List<Supplier>>(null));
+            _repository.Setup(r => r.GetAll(Utils.BuildIQueryableIncludeFunc<Supplier>()));
 
             var serviceResult = await _service.FindAllEntitiesAsync();
 
-            _repository.Verify(r => r.GetAll(It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>()), Times.Once());
+            _repository.Verify(r => r.GetAll(Utils.BuildIQueryableIncludeFunc<Supplier>()), Times.Once());
             Assert.Empty(serviceResult);
         }
 
@@ -100,12 +90,12 @@ namespace UnitTests.ServiceTests
             {
                 SupplierBuilder.NewObject().DomainBuild()
             };
-            var supplierPageList = Utils.PageListBuilder<Supplier>(supplierList);
-            _repository.Setup(r => r.FindAllWithPagination(pageParams, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>())).Returns(Task.FromResult(supplierPageList));
+            var supplierPageList = Utils.PageListBuilder(supplierList);
+            _repository.Setup(r => r.FindAllWithPagination(pageParams, Utils.BuildIQueryableIncludeFunc<Supplier>())).ReturnsAsync(supplierPageList);
 
             var serviceResult = await _service.FindAllEntitiesWithPaginationAsync(pageParams);
 
-            _repository.Verify(r => r.FindAllWithPagination(pageParams, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>()), Times.Once());
+            _repository.Verify(r => r.FindAllWithPagination(pageParams, Utils.BuildIQueryableIncludeFunc<Supplier>()), Times.Once());
             Assert.NotNull(serviceResult);
         }
 
@@ -113,11 +103,11 @@ namespace UnitTests.ServiceTests
         public async Task FindAllEntitiesWithPaginationAsync_ReturnsNull()
         {
             var pageParams = PageParamsBuilder.NewObject().DomainBuild();
-            _repository.Setup(r => r.FindAllWithPagination(pageParams, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>())).Returns(Task.FromResult<PageList<Supplier>>(null));
+            _repository.Setup(r => r.FindAllWithPagination(pageParams, Utils.BuildIQueryableIncludeFunc<Supplier>()));
 
             var serviceResult = await _service.FindAllEntitiesWithPaginationAsync(pageParams);
 
-            _repository.Verify(r => r.FindAllWithPagination(pageParams, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>()), Times.Once());
+            _repository.Verify(r => r.FindAllWithPagination(pageParams, Utils.BuildIQueryableIncludeFunc<Supplier>()), Times.Once());
             Assert.Null(serviceResult);
         }
 
@@ -126,11 +116,11 @@ namespace UnitTests.ServiceTests
         {
             var id = 1;
             var supplier = SupplierBuilder.NewObject().DomainBuild();
-            _repository.Setup(r => r.GetById(id, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>(), false)).Returns(Task.FromResult(supplier));
+            _repository.Setup(r => r.GetById(id, Utils.BuildIQueryableIncludeFunc<Supplier>(), false)).ReturnsAsync(supplier);
 
             var serviceResult = await _service.FindByIdAsync(id);
 
-            _repository.Verify(r => r.GetById(id, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>(), false), Times.Once());
+            _repository.Verify(r => r.GetById(id, Utils.BuildIQueryableIncludeFunc<Supplier>(), false), Times.Once());
             Assert.NotNull(serviceResult);
         }
 
@@ -138,159 +128,139 @@ namespace UnitTests.ServiceTests
         public async Task FindByIdAsync_ReturnsNull()
         {
             var id = 1;
-            _repository.Setup(r => r.GetById(id, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>(), false)).Returns(Task.FromResult<Supplier>(null));
+            _repository.Setup(r => r.GetById(id, Utils.BuildIQueryableIncludeFunc<Supplier>(), false));
 
             var serviceResult = await _service.FindByIdAsync(id);
 
-            _repository.Verify(r => r.GetById(id, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>(), false), Times.Once());
+            _repository.Verify(r => r.GetById(id, Utils.BuildIQueryableIncludeFunc<Supplier>(), false), Times.Once());
             Assert.Null(serviceResult);
         }
 
         [Fact]
-        public async Task SaveAsync_ReturnsTrue_HasNotificationFalse()
+        public async Task SaveAsync_ReturnsTrue()
         {
             var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
-            _repository.Setup(r => r.SaveAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(true));
+            _repository.Setup(r => r.SaveAsync(It.IsAny<Supplier>())).ReturnsAsync(true);
 
             var serviceResult = await _service.SaveAsync(supplierSaveRequest);
-            var hasNotification = _notification.HasNotification();
 
             _repository.Verify(r => r.SaveAsync(It.IsAny<Supplier>()), Times.Once());
             Assert.True(serviceResult);
-            Assert.False(hasNotification);
         }
 
         [Fact]
-        public async Task SaveAsync_ReturnsFalse_HasNotificationTrue()
+        public async Task SaveAsync_EntityInvalid_ReturnsFalse()
         {
             var supplierSaveRequest = SupplierBuilder.NewObject().WithCnpj("").SaveRequestBuild();
-            _repository.Setup(r => r.SaveAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(false));
 
             var serviceResult = await _service.SaveAsync(supplierSaveRequest);
-            var hasNotification = _notification.HasNotification();
 
             _repository.Verify(r => r.SaveAsync(It.IsAny<Supplier>()), Times.Exactly(0));
             Assert.False(serviceResult);
-            Assert.True(hasNotification);
         }
 
         [Fact]
-        public async Task UpdateAsync_ReturnsTrue_HasNotificationFalse()
+        public async Task UpdateAsync_ReturnsTrue()
         {
             var supplierUpdateRequest = SupplierBuilder.NewObject().UpdateRequesBuild();
-            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(true));
+            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).ReturnsAsync(true);
 
             var serviceResult = await _service.UpdateAsync(supplierUpdateRequest);
-            var hasNotification = _notification.HasNotification();
 
             _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Once());
             Assert.True(serviceResult);
-            Assert.False(hasNotification);
         }
 
         [Fact]
-        public async Task UpdateAsync_ReturnsFalse_HasNotificationTrue()
+        public async Task UpdateAsync_EntityInvalid_ReturnsFalse()
         {
             var supplierUpdateRequest = SupplierBuilder.NewObject().WithCnpj("").UpdateRequesBuild();
-            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(false));
 
             var serviceResult = await _service.UpdateAsync(supplierUpdateRequest);
-            var hasNotification = _notification.HasNotification();
 
             _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Exactly(0));
             Assert.False(serviceResult);
-            Assert.True(hasNotification);
         }
 
         [Fact]
-        public async Task AddProductAsync_ReturnsTrue_HasNotificationFalse()
+        public async Task AddProductAsync_ReturnsTrue()
         {
             var supplierId = 1;
             var productId = 1;
             var supplier = SupplierBuilder.NewObject().DomainBuild();
             var product = ProductBuilder.NewObject().DomainBuild();
-            _repository.Setup(r => r.EntityExistAsync(supplierId)).Returns(Task.FromResult(true));
-            _repository.Setup(r => r.GenericExistAsync<Product>(productId)).Returns(Task.FromResult(true));
-            _repository.Setup(r => r.GetById(supplierId, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>(), false)).Returns(Task.FromResult(supplier));
-            _repository.Setup(r => r.FindByGenericAsync<Product>(productId, It.IsAny<Func<IQueryable<Product>, IIncludableQueryable<Product, object>>>(), false)).Returns(Task.FromResult(product));
-            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(true));
+            _repository.Setup(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false)).ReturnsAsync(supplier);
+            _repository.Setup(r => r.FindByGenericAsync(productId, Utils.BuildIQueryableIncludeFunc<Product>(), false)).ReturnsAsync(product);
+            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).ReturnsAsync(true);
             
             var serviceResult = await _service.AddProductAsync(supplierId, productId);
-            var hasNotification = _notification.HasNotification();
 
+            _repository.Verify(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false), Times.Once());
+            _repository.Verify(r => r.FindByGenericAsync(productId, Utils.BuildIQueryableIncludeFunc<Product>(), false), Times.Once());
             _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Once());
             Assert.True(serviceResult);
-            Assert.False(hasNotification);
         }
 
         [Fact]
-        public async Task AddProductAsync_ReturnsFalse_HasNotificationTrue_EntityDoesNotExist()
+        public async Task AddProductAsync__ReturnsFalse()
         {
             var supplierId = 1;
             var productId = 1;
-            _repository.Setup(r => r.EntityExistAsync(supplierId)).Returns(Task.FromResult(false));
-            _repository.Setup(r => r.GenericExistAsync<Product>(productId)).Returns(Task.FromResult(true));
-            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(false));
+            _repository.Setup(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false));
 
             var serviceResult = await _service.AddProductAsync(supplierId, productId);
-            var hasNotification = _notification.HasNotification();
 
-            _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Exactly(0));
+            _repository.Verify(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false), Times.Once());
+            _repository.Verify(r => r.FindByGenericAsync(productId, Utils.BuildIQueryableIncludeFunc<Product>(), false), Times.Never());
+            _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Never());
             Assert.False(serviceResult);
-            Assert.True(hasNotification);
         }
 
         [Fact]
-        public async Task AddProductAsync_ReturnsFalse_HasNotificationTrue_ProductDoesNotExist()
-        {
-            var supplierId = 1;
-            var productId = 1;
-            _repository.Setup(r => r.EntityExistAsync(supplierId)).Returns(Task.FromResult(true));
-            _repository.Setup(r => r.GenericExistAsync<Product>(productId)).Returns(Task.FromResult(false));
-            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(false));
-
-            var serviceResult = await _service.AddProductAsync(supplierId, productId);
-            var hasNotification = _notification.HasNotification();
-
-            _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Exactly(0));
-            Assert.False(serviceResult);
-            Assert.True(hasNotification);
-        }
-
-        [Fact]
-        public async Task RemoveProductAsync_ReturnsTrue_HasNotificationFalse()
+        public async Task AddProductAsync_ProductDoesNotExist_ReturnsFalse()
         {
             var supplierId = 1;
             var productId = 1;
             var supplier = SupplierBuilder.NewObject().DomainBuild();
-            _repository.Setup(r => r.EntityExistAsync(supplierId)).Returns(Task.FromResult(true));
-            _repository.Setup(r => r.GetById(supplierId, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>(), false)).Returns(Task.FromResult(supplier));
-            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(true));
+            _repository.Setup(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false)).ReturnsAsync(supplier);
+            _repository.Setup(r => r.FindByGenericAsync(productId, Utils.BuildIQueryableIncludeFunc<Product>(), false));
 
-            var serviceResult = await _service.RemoveProductAsync(supplierId, productId);
-            var hasNotification = _notification.HasNotification();
+            var serviceResult = await _service.AddProductAsync(supplierId, productId);
 
-            _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Once());
-            Assert.True(serviceResult);
-            Assert.False(hasNotification);
+            _repository.Verify(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false), Times.Once());
+            _repository.Verify(r => r.FindByGenericAsync(productId, Utils.BuildIQueryableIncludeFunc<Product>(), false), Times.Once());
+            _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Never());
+            Assert.False(serviceResult);
         }
 
         [Fact]
-        public async Task RemoveProductAsync_ReturnsFalse_HasNotificationTrue_EntityDoesNotExist()
+        public async Task RemoveProductAsync_ReturnsTrue()
         {
             var supplierId = 1;
             var productId = 1;
             var supplier = SupplierBuilder.NewObject().DomainBuild();
-            _repository.Setup(r => r.EntityExistAsync(supplierId)).Returns(Task.FromResult(false));
-            _repository.Setup(r => r.GetById(supplierId, It.IsAny<Func<IQueryable<Supplier>, IIncludableQueryable<Supplier, object>>>(), false)).Returns(Task.FromResult(supplier));
-            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).Returns(Task.FromResult(true));
+            _repository.Setup(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false)).ReturnsAsync(supplier);
+            _repository.Setup(r => r.UpdateAsync(It.IsAny<Supplier>())).ReturnsAsync(true);
 
             var serviceResult = await _service.RemoveProductAsync(supplierId, productId);
-            var hasNotification = _notification.HasNotification();
 
+            _repository.Verify(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false), Times.Once());
+            _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Once());
+            Assert.True(serviceResult);
+        }
+
+        [Fact]
+        public async Task RemoveProductAsync_EntityDoesNotExist_ReturnsFalse()
+        {
+            var supplierId = 1;
+            var productId = 1;
+            _repository.Setup(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false));
+
+            var serviceResult = await _service.RemoveProductAsync(supplierId, productId);
+
+            _repository.Verify(r => r.GetById(supplierId, Utils.BuildIQueryableIncludeFunc<Supplier>(), false), Times.Once());
             _repository.Verify(r => r.UpdateAsync(It.IsAny<Supplier>()), Times.Exactly(0));
             Assert.False(serviceResult);
-            Assert.True(hasNotification);
         }
     }
 }

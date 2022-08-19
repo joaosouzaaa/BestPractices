@@ -77,15 +77,14 @@ namespace BestPractices.ApplicationService.Services
 
         public async Task<bool> AddProductAsync(int supplierId, int productId)
         {
-            if (!await _supplierRepository.EntityExistAsync(supplierId))
+            var supplier = await _supplierRepository.GetById(supplierId, include: s => s.Include(s => s.Products));
+            if(supplier == null)
                 return _notification.AddNotification(new DomainNotification("Id", EMessage.NotFound.Description().FormatTo("Supplier")));
 
-            if (!await _supplierRepository.GenericExistAsync<Product>(productId))
+            var product = await _supplierRepository.FindByGenericAsync<Product>(productId, include: p => p.Include(p => p.Supplier));
+            if(product == null)
                 return _notification.AddNotification(new DomainNotification("Id", EMessage.NotFound.Description().FormatTo("Product")));
 
-            var supplier = await _supplierRepository.GetById(supplierId, include: s => s.Include(s => s.Products));
-            var product = await _supplierRepository.FindByGenericAsync<Product>(productId, include: p => p.Include(p => p.Supplier));
-            
             supplier.Products.Add(product);
 
             return await _supplierRepository.UpdateAsync(supplier);
@@ -94,10 +93,11 @@ namespace BestPractices.ApplicationService.Services
 
         public async Task<bool> RemoveProductAsync(int supplierId, int productId)
         {
-            if (!await _supplierRepository.EntityExistAsync(supplierId))
+            var supplier = await _supplierRepository.GetById(supplierId, include: s => s.Include(s => s.Products));
+
+            if(supplier == null)
                 return _notification.AddNotification(new DomainNotification("Id", EMessage.NotFound.Description().FormatTo("Supplier")));
 
-            var supplier = await _supplierRepository.GetById(supplierId, include: s => s.Include(s => s.Products));
             var product = supplier.Products.Find(p => p.Id == productId);
 
             if(product == null)
