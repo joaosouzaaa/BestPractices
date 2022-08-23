@@ -1,4 +1,5 @@
-﻿using BestPractices.ApplicationService.Interfaces;
+﻿using BestPractices.Api.ResponseTypesAttributes;
+using BestPractices.ApplicationService.Interfaces;
 using BestPractices.ApplicationService.Request.ShoppingCart;
 using BestPractices.ApplicationService.Response.ShoppingCart;
 using BestPractices.Business.Settings.NotificationSettings;
@@ -21,50 +22,32 @@ namespace BestPractices.Api.Controllers
         }
 
         [HttpPost("add_shoppingcart")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [CommandsResponseTypes]
         public async Task<bool> AddShoppingCartAsync([FromBody] ShoppingCartSaveRequest saveRequest) =>
             await _shoppingCartService.SaveAsync(saveRequest);
 
         [HttpPut("update_shoppingcart")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [CommandsResponseTypes]
         public async Task<bool> UpdateShoppingCartAsync([FromBody] ShoppingCartUpdateRequest updateRequest) =>
             await _shoppingCartService.UpdateAsync(updateRequest);
 
         [HttpDelete("delete_shoppingcart")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [CommandsResponseTypes]
         public async Task<bool> DeleteShoppingCartAsync([FromQuery] int id) =>
             await _shoppingCartService.DeleteAsync(id);
 
         [HttpGet("find_shoppingcart")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [QueryCommandsResponseTypes]
         public async Task<ShoppingCartResponse> FindShoppingCartAsync([FromQuery] int id) =>
             await _shoppingCartService.FindByIdAsync(id);
 
         [HttpPut("add_product")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [CommandsResponseTypes]
         public async Task<bool> AddProductAsync(int shoppingCartId, int productId) =>
             await _shoppingCartService.AddProductAsync(shoppingCartId, productId);
 
         [HttpPut("remove_product")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [CommandsResponseTypes]
         public async Task<bool> RemoveProductAsync(int shoppingCartId, int productId) =>
             await _shoppingCartService.RemoveProductAsync(shoppingCartId, productId);
     }

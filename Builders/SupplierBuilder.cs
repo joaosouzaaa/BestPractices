@@ -2,7 +2,7 @@
 using BestPractices.ApplicationService.Response.Product;
 using BestPractices.ApplicationService.Response.Supplier;
 using BestPractices.Domain.Entities;
-using Builders;
+using Bogus;
 
 namespace Builders
 {
@@ -10,6 +10,7 @@ namespace Builders
     {
         private string _cnpj = "18369822000100";
         private string _companyName = "name of the comapbny";
+        private int _id = new Faker().Random.Int(1, 1000);
 
         public static SupplierBuilder NewObject()
         {
@@ -26,7 +27,7 @@ namespace Builders
                 CompanyAddress = address,
                 CNPJ = _cnpj,
                 CompanyName = _companyName,
-                Id = 1,
+                Id = _id,
                 Products = productList
             };
         }
@@ -50,7 +51,7 @@ namespace Builders
                 CompanyAddress = addressUpdateRequest,
                 CNPJ = _cnpj,
                 CompanyName = _companyName,
-                Id = 1
+                Id = _id
             };
         }
 
@@ -62,7 +63,7 @@ namespace Builders
                 CompanyAddressResponse = addressResponse,
                 CNPJ = _cnpj,
                 CompanyName = _companyName,
-                Id = 1,
+                Id = _id,
                 ProductsResponse = new List<ProductResponse>()
             };
         }
@@ -76,6 +77,12 @@ namespace Builders
         public SupplierBuilder WithCompanyName(string companyName)
         {
             _companyName = companyName;
+            return this;
+        }
+
+        public SupplierBuilder WithId(int id)
+        {
+            _id = id;
             return this;
         }
     }

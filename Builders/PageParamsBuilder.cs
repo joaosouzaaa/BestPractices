@@ -13,7 +13,6 @@ namespace Builders
         {
             return new PageParams
             {
-                IndexDescription = "description here",
                 PageNumber = 1,
                 PageSize = 10
             };

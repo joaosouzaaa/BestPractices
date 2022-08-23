@@ -1,4 +1,5 @@
 ﻿using BestPractices.Api.Extensions;
+using BestPractices.Api.ResponseTypesAttributes;
 using BestPractices.ApplicationService.Interfaces;
 using BestPractices.ApplicationService.Request.User;
 using BestPractices.ApplicationService.Response.BearerToken;
@@ -22,62 +23,41 @@ namespace BestPractices.Api.Controllers
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [CommandsResponseTypes]
         public async Task<bool> RegisterAsync([FromBody] UserSaveRequest userSaveRequest) =>
             await _userService.RegisterAsync(userSaveRequest);
 
         [HttpPost("login")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [ProducesAllResponseTypes]
         public async Task<BearerTokenResponse> LoginAsync([FromBody] UserSaveRequest userSaveRequest) =>
             await _userService.LoginAsync(userSaveRequest);
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet("current")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [ProducesAllResponseTypes]
         public async Task<UserResponseClient> GetCurrentLoggedInUserAsync() =>
             await _userService.GetUserByEmailAsync(HttpContext.GetUserEmail());
 
         [HttpDelete("delete_user")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [CommandsResponseTypes]
         public async Task<bool> DeleteAsync([FromQuery] string userId) =>
             await _userService.DeleteAsync(userId);
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("update_user")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [CommandsResponseTypes]
         public async Task<bool> UpdateAsync([FromBody] UserUpdateRequest updateRequest) =>
             await _userService.UpdateAsync(updateRequest);
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet("getall")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [QueryCommandsResponseTypes]
         public async Task<List<UserResponseClient>> GetAllAsync() =>
             await _userService.FindAllEntitiesAsync();
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet("getall_pagination")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IEnumerable<DomainNotification>))]
+        [QueryCommandsResponseTypes]
         public async Task<PageList<UserResponseClient>> GetAllWithPaginationAsync([FromQuery] PageParams pageParams) =>
            await _userService.FindAllEntitiesWithPaginationAsync(pageParams);
     }

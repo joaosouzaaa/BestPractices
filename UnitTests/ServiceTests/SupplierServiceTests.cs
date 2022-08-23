@@ -2,13 +2,9 @@
 using BestPractices.ApplicationService.Services;
 using BestPractices.Business.Interfaces.Repository;
 using BestPractices.Business.Settings.NotificationSettings;
-using BestPractices.Business.Settings.PaginationSettings;
 using BestPractices.Business.Settings.ValidationSettings.EntitiesValidation;
 using BestPractices.Domain.Entities;
-using Builders;
 using Builders.Helpers;
-using Microsoft.EntityFrameworkCore.Query;
-using System.Linq;
 
 namespace UnitTests.ServiceTests
 {

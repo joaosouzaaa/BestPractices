@@ -2,10 +2,8 @@
 using BestPractices.ApplicationService.Interfaces;
 using BestPractices.ApplicationService.Request.Supplier;
 using BestPractices.ApplicationService.Response.Supplier;
-using BestPractices.Business.Settings.NotificationSettings;
 using BestPractices.Business.Settings.PaginationSettings;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BestPractices.Api.Controllers
@@ -54,7 +52,7 @@ namespace BestPractices.Api.Controllers
 
         [HttpPut("add_product")]
         [CommandsResponseTypes]
-        public async Task<bool> AddProductAsync(int supplierId, int productId) =>
+        public async Task<bool> AddProductAsync([FromQuery]int supplierId, int productId) =>
             await _supplierService.AddProductAsync(supplierId, productId);
 
         [HttpPut("remove_product")]

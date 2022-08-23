@@ -64,8 +64,8 @@ namespace BestPractices.ApplicationService.Services
 
             if (!await ValidatedAsync(product))
                 return false;
-            else
-                return await _productRepository.SaveAsync(product);
+            
+            return await _productRepository.SaveAsync(product);
         }
 
         public async Task<bool> UpdateAsync(ProductUpdateRequest updateRequest)
@@ -77,8 +77,8 @@ namespace BestPractices.ApplicationService.Services
 
             if (!await ValidatedAsync(product))
                 return false;
-            else
-                return await _productRepository.UpdateAsync(product);
+            
+            return await _productRepository.UpdateAsync(product);
         }
     }
 }

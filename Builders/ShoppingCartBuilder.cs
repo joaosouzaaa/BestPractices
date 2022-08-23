@@ -2,6 +2,7 @@
 using BestPractices.ApplicationService.Response.Product;
 using BestPractices.ApplicationService.Response.ShoppingCart;
 using BestPractices.Domain.Entities;
+using Bogus;
 
 namespace Builders
 {
@@ -11,6 +12,13 @@ namespace Builders
         private bool _finished = false;
         private int _totalItens = 2;
         private string _userId = Guid.NewGuid().ToString();
+        private int _id = new Faker().Random.Int(1, 1000);
+        private List<int> _productsIdsList = new List<int>()
+        {
+                
+            1,
+            2
+        };    
 
         public static ShoppingCartBuilder NewObject()
         {
@@ -25,7 +33,7 @@ namespace Builders
             {
                 TotalAmount = _totalAmount,
                 Finished = _finished,
-                Id = 1,
+                Id = _id,
                 Products = productList,
                 TotalItens = _totalItens,
                 UserId = _userId
@@ -34,15 +42,10 @@ namespace Builders
 
         public ShoppingCartSaveRequest SaveRequestBuild()
         {
-            var productsIdsList = new List<int>()
-            {
-                1,
-                2
-            };
 
             return new ShoppingCartSaveRequest
             {
-                ProductsIds = productsIdsList,
+                ProductsIds = _productsIdsList,
                 UserId = _userId
             };
         }
@@ -51,7 +54,7 @@ namespace Builders
         {
             return new ShoppingCartUpdateRequest
             {
-                Id = 1,
+                Id = _id,
                 TotalAmount = _totalAmount,
                 TotalItens = _totalItens
             };
@@ -69,7 +72,7 @@ namespace Builders
             {
                 TotalAmount = _totalAmount,
                 Finished = _finished,
-                Id = 1,
+                Id = _id,
                 ProductsResponse = productsResponseList,
                 TotalItens = _totalItens,
                 UserResponseClient = userResponseClient
@@ -85,6 +88,18 @@ namespace Builders
         public ShoppingCartBuilder WithTotalAmount(decimal totalAmount)
         {
             _totalAmount = totalAmount;
+            return this;
+        }
+
+        public ShoppingCartBuilder WithProductsIdsList(List<int> productIdList)
+        {
+            _productsIdsList = productIdList;
+            return this;
+        }
+
+        public ShoppingCartBuilder WithUserId(string userId)
+        {
+            _userId = userId;
             return this;
         }
     }

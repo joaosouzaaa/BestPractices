@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BestPractices.Api\BestPractices.Api.csproj" />
     <ProjectReference Include="..\BestPractices.Infra\BestPractices.Infra.csproj" />
+    <ProjectReference Include="..\Builders\Builders.csproj" />
   </ItemGroup>
 
 </Project>

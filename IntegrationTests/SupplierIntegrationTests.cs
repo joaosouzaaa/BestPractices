@@ -1,12 +1,195 @@
-﻿using System;
+﻿using BestPractices.ApplicationService.Request.Supplier;
+using BestPractices.ApplicationService.Response.Supplier;
+using BestPractices.ApplicationService.Response.User;
+using Builders;
+using IntegrationTests.Fixture;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace IntegrationTests
 {
-    internal class SupplierIntegrationTests
+    public class SupplierIntegrationTests : HttpClientFixture
     {
+        [Fact]
+        public async Task AddSupplierAsync_ReturnsSuccess()
+        {
+            await AuthenticateAsync();
+            var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
+            
+            var postStatusCode = await AddSupplierAsync(supplierSaveRequest);
+
+            Assert.Equal(postStatusCode, HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task AddSupplierAsync_ReturnsBadRequest()
+        {
+            await AuthenticateAsync();
+            var supplierSaveRequest = SupplierBuilder.NewObject().WithCompanyName("aa").SaveRequestBuild();
+            
+            var postStatusCode = await AddSupplierAsync(supplierSaveRequest);
+
+            Assert.Equal(postStatusCode, HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task UpdateSupplierAsync_ReturnsSuccess()
+        {
+            await AuthenticateAsync();
+            var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
+            var postResult = await AddSupplierAsync(supplierSaveRequest);
+            var supplierUpdateRequest = SupplierBuilder.NewObject().WithId(1).UpdateRequesBuild();
+            //await AuthenticateAsync();
+
+            var putResult = await CreatePutAsync("api/Supplier/update_supplier", supplierUpdateRequest);
+            
+            Assert.Equal(putResult, HttpStatusCode.OK);
+            Assert.Equal(postResult, HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task UpdateAsync_ReturnsBadRequest()
+        {
+            await AuthenticateAsync();
+            var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
+            var postResult = await AddSupplierAsync(supplierSaveRequest);
+            var supplierUpdateRequest = SupplierBuilder.NewObject().WithId(1).WithCompanyName("aa").UpdateRequesBuild();
+
+            var putResult = await CreatePutAsync("api/Supplier/update_supplier", supplierUpdateRequest);
+
+            Assert.Equal(putResult, HttpStatusCode.BadRequest);
+            Assert.Equal(postResult, HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ReturnsSuccess()
+        {
+            await AuthenticateAsync();
+            var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
+            var postResult = await AddSupplierAsync(supplierSaveRequest);
+
+            var deleteResult = await CreateDeleteAsync("api/Supplier/delete_supplier?id=1");
+
+            Assert.Equal(deleteResult, HttpStatusCode.OK);
+            Assert.Equal(postResult, HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ReturnsBadRequest()
+        {
+            await AuthenticateAsync();
+
+            var deleteResult = await CreateDeleteAsync("api/Supplier/delete_supplier?id=100");
+
+            Assert.Equal(deleteResult, HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task FindSupplierAsync_ReturnsEntity()
+        {
+            await AuthenticateAsync();
+            var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
+            var postResult = await AddSupplierAsync(supplierSaveRequest);
+
+            var supplierResponse = await CreateGetAsync<SupplierResponse>("api/Supplier/find_supplier?id=1");
+
+            Assert.Equal(postResult, HttpStatusCode.OK);
+            Assert.NotNull(supplierResponse);
+        }
+        
+        [Fact]
+        public async Task FindAllSupplierAsync_ReturnsEntities()
+        {
+            await AuthenticateAsync();
+            var supplierSaveRequestList = new List<SupplierSaveRequest>()
+            {
+                SupplierBuilder.NewObject().SaveRequestBuild(),
+                SupplierBuilder.NewObject().SaveRequestBuild()
+            };
+            foreach(var supplierSaveRequest in supplierSaveRequestList)
+            {
+                var postResult = await CreatePostAsync("api/Supplier/add_supplier", supplierSaveRequest);
+                Assert.Equal(postResult, HttpStatusCode.OK);
+            }
+
+            var getAllResult = await CreateGetAllAsync<SupplierResponse>("api/Supplier/findall_suppliers");
+
+            Assert.Equal(getAllResult.Count, 2);
+        }
+
+        [Fact]
+        public async Task FindAllSuppliersPaginationAsync_ReturnsEntities()
+        {
+            await AuthenticateAsync();
+            var supplierSaveRequestList = new List<SupplierSaveRequest>()
+            {
+                SupplierBuilder.NewObject().SaveRequestBuild(),
+                SupplierBuilder.NewObject().SaveRequestBuild()
+            };
+            foreach (var supplierSaveRequest in supplierSaveRequestList)
+            {
+                var postResult = await CreatePostAsync("api/Supplier/add_supplier", supplierSaveRequest);
+                Assert.Equal(postResult, HttpStatusCode.OK);
+            }
+
+            var getAllPaginationResult = await CreateGetAllPageListAsync<SupplierResponse>("api/Supplier/findall_suppliers_paginations?PageSize=10&PageNumber=1");
+
+            Assert.Equal(getAllPaginationResult.TotalCount, supplierSaveRequestList.Count);
+        }
+
+        [Fact]
+        public async Task AddProductAsync_ReturnsTrue()
+        {
+            await AuthenticateAsync();
+            var postProductResult = await AddProductAsync();
+            var userResponseClient = await CreateGetAsync<UserResponseClient>("api/User/current");
+            var productsIdsList = new List<int>
+            {
+                1
+            };
+            var shoppingCartSaveRequest = ShoppingCartBuilder.NewObject().WithProductsIdsList(productsIdsList).WithUserId(userResponseClient.Id).SaveRequestBuild();
+            var postShoppingCartResult = await CreatePostAsync("api/ShoppingCart/add_shoppingcart", shoppingCartSaveRequest);
+            var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
+            var postSupplierResult = await AddSupplierAsync(supplierSaveRequest);
+
+            var addProductAsyncResult = await _httpClient.PutAsync("api/Supplier/add_product?supplierId=1&productId=1", null);
+
+            Assert.Equal(postProductResult, HttpStatusCode.OK);
+            Assert.Equal(postShoppingCartResult, HttpStatusCode.OK);
+            Assert.Equal(postSupplierResult, HttpStatusCode.OK);
+            Assert.Equal(addProductAsyncResult.StatusCode, HttpStatusCode.OK);
+        }
+
+        private async Task<HttpStatusCode> AddProductAsync()
+        {
+            var productSaveRequest = ProductBuilder.NewObject().SaveRequestBuild();
+            var bytes = Encoding.UTF8.GetBytes("This is a dummy file");
+            var streamContent = new StreamContent(new MemoryStream(bytes));
+            streamContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+            var multipartFormDataContent = new MultipartFormDataContent()
+            {
+                    { new StringContent(productSaveRequest.ProductName), "ProductName"},
+                    { new StringContent(productSaveRequest.Price.ToString()), "Price"},
+                    { new StringContent(productSaveRequest.Brand), "Brand"},
+                    { new StringContent(productSaveRequest.Category.ToString()), "Category"},
+                    { new StringContent(productSaveRequest.Description), "Description"},
+                    { new StringContent(productSaveRequest.TransportationPrice.ToString()), "TransportationPrice"},
+                    { streamContent, "image", "image.jpg" },
+                    { new StringContent(productSaveRequest.SupplierId.ToString()), "SupplierId"},
+                    { new StringContent(productSaveRequest.ShoppingCartId.ToString()), "ShoppingCartId"},
+            };
+
+            var httpResponse = await _httpClient.PostAsync("api/Product/add_product", multipartFormDataContent);
+            return httpResponse.StatusCode;
+        }
+
+        private async Task<HttpStatusCode> AddSupplierAsync(SupplierSaveRequest supplierSaveRequest) =>
+            await CreatePostAsync("api/Supplier/add_supplier", supplierSaveRequest);
     }
 }

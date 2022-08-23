@@ -81,7 +81,10 @@ namespace BestPractices.ApplicationService.Services
             var user = await _userRepository.GetUserByEmailAsync(email);
 
             if (user == null)
-                _notification.AddNotification($"{email}", EMessage.NotFound.Description().FormatTo($"{email}"));
+            {
+                _notification.AddNotification(new DomainNotification($"Email", EMessage.NotFound.Description().FormatTo($"User")));
+                return null;
+            }
 
             return user.MapTo<User, UserResponseClient>();
         }
