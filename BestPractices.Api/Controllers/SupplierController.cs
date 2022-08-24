@@ -49,15 +49,5 @@ namespace BestPractices.Api.Controllers
         [QueryCommandsResponseTypes]
         public async Task<PageList<SupplierResponse>> FindAllSuppliersPaginationAsync([FromQuery] PageParams pageParams) =>
             await _supplierService.FindAllEntitiesWithPaginationAsync(pageParams);
-
-        [HttpPut("add_product")]
-        [CommandsResponseTypes]
-        public async Task<bool> AddProductAsync([FromQuery]int supplierId, int productId) =>
-            await _supplierService.AddProductAsync(supplierId, productId);
-
-        [HttpPut("remove_product")]
-        [CommandsResponseTypes]
-        public async Task<bool> RemoveProductAsync(int supplierId, int productId) =>
-            await _supplierService.RemoveProductAsync(supplierId, productId);
     }
 }

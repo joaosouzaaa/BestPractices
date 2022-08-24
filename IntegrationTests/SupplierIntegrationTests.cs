@@ -1,14 +1,9 @@
 ﻿using BestPractices.ApplicationService.Request.Supplier;
 using BestPractices.ApplicationService.Response.Supplier;
-using BestPractices.ApplicationService.Response.User;
 using Builders;
 using IntegrationTests.Fixture;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -45,7 +40,6 @@ namespace IntegrationTests
             var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
             var postResult = await AddSupplierAsync(supplierSaveRequest);
             var supplierUpdateRequest = SupplierBuilder.NewObject().WithId(1).UpdateRequesBuild();
-            //await AuthenticateAsync();
 
             var putResult = await CreatePutAsync("api/Supplier/update_supplier", supplierUpdateRequest);
             
@@ -138,55 +132,9 @@ namespace IntegrationTests
                 Assert.Equal(postResult, HttpStatusCode.OK);
             }
 
-            var getAllPaginationResult = await CreateGetAllPageListAsync<SupplierResponse>("api/Supplier/findall_suppliers_paginations?PageSize=10&PageNumber=1");
+            var getAllPaginationResult = await CreateGetAllPageListAsync<SupplierResponse>("api/Supplier/findall_suppliers_pagination?PageSize=10&PageNumber=1");
 
             Assert.Equal(getAllPaginationResult.TotalCount, supplierSaveRequestList.Count);
-        }
-
-        [Fact]
-        public async Task AddProductAsync_ReturnsTrue()
-        {
-            await AuthenticateAsync();
-            var postProductResult = await AddProductAsync();
-            var userResponseClient = await CreateGetAsync<UserResponseClient>("api/User/current");
-            var productsIdsList = new List<int>
-            {
-                1
-            };
-            var shoppingCartSaveRequest = ShoppingCartBuilder.NewObject().WithProductsIdsList(productsIdsList).WithUserId(userResponseClient.Id).SaveRequestBuild();
-            var postShoppingCartResult = await CreatePostAsync("api/ShoppingCart/add_shoppingcart", shoppingCartSaveRequest);
-            var supplierSaveRequest = SupplierBuilder.NewObject().SaveRequestBuild();
-            var postSupplierResult = await AddSupplierAsync(supplierSaveRequest);
-
-            var addProductAsyncResult = await _httpClient.PutAsync("api/Supplier/add_product?supplierId=1&productId=1", null);
-
-            Assert.Equal(postProductResult, HttpStatusCode.OK);
-            Assert.Equal(postShoppingCartResult, HttpStatusCode.OK);
-            Assert.Equal(postSupplierResult, HttpStatusCode.OK);
-            Assert.Equal(addProductAsyncResult.StatusCode, HttpStatusCode.OK);
-        }
-
-        private async Task<HttpStatusCode> AddProductAsync()
-        {
-            var productSaveRequest = ProductBuilder.NewObject().SaveRequestBuild();
-            var bytes = Encoding.UTF8.GetBytes("This is a dummy file");
-            var streamContent = new StreamContent(new MemoryStream(bytes));
-            streamContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-            var multipartFormDataContent = new MultipartFormDataContent()
-            {
-                    { new StringContent(productSaveRequest.ProductName), "ProductName"},
-                    { new StringContent(productSaveRequest.Price.ToString()), "Price"},
-                    { new StringContent(productSaveRequest.Brand), "Brand"},
-                    { new StringContent(productSaveRequest.Category.ToString()), "Category"},
-                    { new StringContent(productSaveRequest.Description), "Description"},
-                    { new StringContent(productSaveRequest.TransportationPrice.ToString()), "TransportationPrice"},
-                    { streamContent, "image", "image.jpg" },
-                    { new StringContent(productSaveRequest.SupplierId.ToString()), "SupplierId"},
-                    { new StringContent(productSaveRequest.ShoppingCartId.ToString()), "ShoppingCartId"},
-            };
-
-            var httpResponse = await _httpClient.PostAsync("api/Product/add_product", multipartFormDataContent);
-            return httpResponse.StatusCode;
         }
 
         private async Task<HttpStatusCode> AddSupplierAsync(SupplierSaveRequest supplierSaveRequest) =>

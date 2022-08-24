@@ -13,6 +13,5 @@ namespace BestPractices.ApplicationService.Request.Product
         public decimal TransportationPrice { get; set; }
         public IFormFile? Image { get; set; }
         public int SupplierId { get; set; }
-        public int ShoppingCartId { get; set; }
     }
 }

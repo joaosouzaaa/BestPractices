@@ -168,57 +168,5 @@ namespace UnitTests.ControllerTests
             _service.Verify(s => s.FindAllEntitiesWithPaginationAsync(pageParams), Times.Once());
             Assert.Null(controllerResult);
         }
-
-        [Fact]
-        public async Task AddProductAsync_ReturnsTrue()
-        {
-            var supplierId = 1;
-            var productId = 1;
-            _service.Setup(s => s.AddProductAsync(supplierId, productId)).ReturnsAsync(true);
-
-            var controllerResult = await _controller.AddProductAsync(supplierId, productId);
-
-            _service.Verify(s => s.AddProductAsync(supplierId, productId), Times.Once());
-            Assert.True(controllerResult);
-        }
-
-        [Fact]
-        public async Task AddProductAsync_ReturnsFalse()
-        {
-            var supplierId = 1;
-            var productId = 1;
-            _service.Setup(s => s.AddProductAsync(supplierId, productId)).ReturnsAsync(false);
-
-            var controllerResult = await _controller.AddProductAsync(supplierId, productId);
-
-            _service.Verify(s => s.AddProductAsync(supplierId, productId), Times.Once());
-            Assert.False(controllerResult);
-        }
-
-        [Fact]
-        public async Task RemoveProductAsync_ReturnsTrue()
-        {
-            var supplierId = 1;
-            var productId = 1;
-            _service.Setup(s => s.RemoveProductAsync(supplierId, productId)).ReturnsAsync(true);
-
-            var controllerResult = await _controller.RemoveProductAsync(supplierId, productId);
-
-            _service.Verify(s => s.RemoveProductAsync(supplierId, productId), Times.Once());
-            Assert.True(controllerResult);
-        }
-
-        [Fact]
-        public async Task RemoveProductAsync_ReturnsFalse()
-        {
-            var supplierId = 1;
-            var productId = 1;
-            _service.Setup(s => s.RemoveProductAsync(supplierId, productId)).ReturnsAsync(false);
-
-            var controllerResult = await _controller.RemoveProductAsync(supplierId, productId);
-
-            _service.Verify(s => s.RemoveProductAsync(supplierId, productId), Times.Once());
-            Assert.False(controllerResult);
-        }
     }
 }

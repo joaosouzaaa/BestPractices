@@ -21,7 +21,6 @@ namespace UnitTests.AutoMapperTests
             Assert.Equal(productSaveRequest.Brand, Product.Brand);
             Assert.Equal(productSaveRequest.Description, Product.Description);
             Assert.Equal(productSaveRequest.SupplierId, Product.SupplierId);
-            Assert.Equal(productSaveRequest.ShoppingCartId, Product.ShoppingCartId);
             Assert.Equal(productSaveRequest.TransportationPrice, Product.TransportationPrice);
             Assert.Equal((ushort)productSaveRequest.Category, (ushort)Product.Category);
         }

@@ -6,7 +6,5 @@ namespace BestPractices.ApplicationService.Interfaces
 {
     public interface ISupplierService : IBaseQueryService<SupplierSaveRequest, SupplierUpdateRequest, SupplierResponse>
     {
-        Task<bool> AddProductAsync(int supplierId, int productId);
-        Task<bool> RemoveProductAsync(int supplierId, int productId);
     }
 }

@@ -51,7 +51,6 @@ namespace Builders
                 Image = Utils.BuildIFormFile(),
                 Price = _price,
                 ProductName = _productName,
-                ShoppingCartId = 1,
                 SupplierId = 1,
                 TransportationPrice = _transportationPrice
             };
